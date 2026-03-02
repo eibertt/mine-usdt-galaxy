@@ -1,0 +1,17 @@
+{
+  "name": "space-miners-bot",
+  "version": "1.0.0",
+  "description": "Bot de Telegram para el ecosistema Space Miners",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "grammy": "^1.20.0",
+    "dotenv": "^16.4.0",
+    "axios": "^1.6.0"
+  },
+  "author": "eibertt",
+  "license": "MIT"
+}
