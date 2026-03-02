@@ -1,22 +1,20 @@
 const { Bot, InlineKeyboard } = require("grammy");
+require("dotenv").config();
 
-// Reemplaza 'TU_TOKEN_AQUI' con el token que te da @BotFather
-const bot = new Bot("TU_TOKEN_AQUI");
+// Iniciamos el bot con el Token del archivo .env
+const bot = new Bot(process.env.BOT_TOKEN);
 
-bot.command("start", async (ctx) => {
-  // Teclado con el botón para abrir la Mini App (TWA)
+bot.command("start", (ctx) => {
   const keyboard = new InlineKeyboard()
-    .webApp("🚀 Jugar ahora", "https://tu-juego-url.com")
+    .webApp("🚀 Jugar ahora", "https://tu-juego.com") // Aquí irá el link de tu frontend
     .row()
-    .url("📢 Canal Oficial", "https://t.me/tu_canal");
+    .url("📢 Canal Oficial", "https://t.me/TuCanal");
 
-  await ctx.reply(
-    `¡Bienvenido a Space Miners, Capitán ${ctx.from.first_name}! 🛰️\n\n` +
-    "Prepara tus naves para extraer T-Coins y dominar la galaxia.\n" +
-    "Haz clic en el botón de abajo para empezar a minar.",
+  ctx.reply(
+    `🛸 ¡Bienvenido a Space Miners, Capitán ${ctx.from.first_name}!\n\n` +
+    "Tu flota está lista para extraer T-Coins. ¿Estás listo para conquistar la galaxia?",
     { reply_markup: keyboard }
   );
 });
 
 bot.start();
-console.log("Bot de Space Miners ejecutándose...");
