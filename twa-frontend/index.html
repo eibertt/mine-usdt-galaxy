@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Miners UI</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>🚀 SPACE MINERS</h1>
+            <div class="user-info">
+                <span id="username">Cargando...</span>
+            </div>
+        </header>
+
+        <section class="stats">
+            <div class="stat-box">
+                <p>💰 T-Coins</p>
+                <h2 id="balance">0.00</h2>
+            </div>
+            <div class="stat-box">
+                <p>⛽ Combustible</p>
+                <div class="progress-bg">
+                    <div id="fuel-bar" style="width: 100%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ship-display">
+            <img id="ship-img" src="../assets/sonda-nano.png" alt="Tu Nave">
+            <p id="ship-name">Sonda Nano</p>
+        </section>
+
+        <button id="mine-btn" onclick="mineClick()">⛏️ MINAR T-COINS</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
