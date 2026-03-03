@@ -3,145 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Titan B - Space Miners</title>
+    <title>Space Miners - Galaxy</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --main-blue: #00d4ff; --gold: #ffcc00; --bg-dark: #090a0f; --glass: rgba(255, 255, 255, 0.05); }
-        
-        body { 
-            background: url('https://raw.githubusercontent.com/eibertt/mine-usdt-galaxy/main/assets/background.jpg') no-repeat center center fixed; 
-            background-size: cover; background-color: var(--bg-dark);
-            color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden;
-        }
-
-        /* Estilo de la Barra Superior */
-        .top-bar { display: flex; justify-content: space-between; padding: 15px; position: fixed; width: 100%; box-sizing: border-box; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
-        .user-pill { display: flex; align-items: center; gap: 8px; background: var(--glass); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .user-pill img { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--main-blue); }
-
-        /* Contenedores de Páginas */
-        .page { display: none; height: 100vh; padding: 80px 20px 100px 20px; overflow-y: auto; box-sizing: border-box; flex-direction: column; align-items: center; }
-        .active-page { display: flex; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Tarjetas de Estadísticas (Efecto IMR) */
-        .glass-card { 
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; 
-            padding: 20px; margin: 10px 0; width: 100%; backdrop-filter: blur(15px); text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        /* Nave Principal */
-        .main-ship { width: 180px; filter: drop-shadow(0 0 30px var(--main-blue)); margin: 30px 0; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
-
-        /* Botón de Minado circular neón */
-        .mine-circle {
-            width: 120px; height: 120px; border-radius: 50%; border: none;
-            background: radial-gradient(circle, #00d4ff 0%, #0055ff 100%);
-            color: white; font-weight: bold; font-size: 16px; cursor: pointer;
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
-            transition: 0.2s;
-        }
-        .mine-circle:active { transform: scale(0.9); box-shadow: 0 0 10px var(--main-blue); }
-
-        /* Lista de Naves en Tienda */
-        .shop-item {
-            display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 12px; margin-bottom: 12px; width: 100%;
-        }
-        .btn-buy-now { background: #2ebd85; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; }
-
-        /* Navbar estilo aplicación moderna */
-        .navbar { position: fixed; bottom: 15px; left: 15px; right: 15px; height: 65px; background: rgba(15, 15, 25, 0.9); border-radius: 25px; display: flex; justify-content: space-around; align-items: center; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); z-index: 1000; }
-        .nav-link { color: #666; text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.3s; }
-        .nav-link.active { color: var(--main-blue); }
-        .nav-link i { font-size: 20px; }
-    </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="user-pill">
-            <img id="u-img" src="https://via.placeholder.com/22">
-            <span id="u-name" style="font-size: 12px; font-weight: bold;">Cargando...</span>
+    <header class="top-bar">
+        <div class="user-profile" onclick="openProfile()">
+            <img src="assets/robot1.png" id="user-avatar" class="avatar-mini">
+            <span id="user-name">Cargando...</span>
         </div>
-        <div class="user-pill" style="color: var(--gold);"><i class="fas fa-bolt"></i> 100%</div>
-    </div>
-
-    <div id="home" class="page active-page">
-        <img src="https://raw.githubusercontent.com/eibertt/mine-usdt-galaxy/main/assets/sonda_nano.png" class="main-ship">
-        <div class="glass-card">
-            <p style="margin:0; font-size: 11px; opacity: 0.6; text-transform: uppercase;">Balance de Minado</p>
-            <h1 style="margin: 10px 0; font-size: 40px; color: var(--main-blue);"><span id="bal">0.00</span> <small style="font-size: 15px; color: white;">T-Coins</small></h1>
+        <div class="settings-icon" onclick="openSettings()">
+            ⚙️
         </div>
-        <button class="mine-circle" onclick="doMine()">MINAR</button>
-    </div>
+    </header>
 
-    <div id="earnings" class="page">
-        <h2 style="margin-bottom: 20px; letter-spacing: 1px;">SISTEMAS DE MINADO</h2>
-        
-        <div class="shop-item">
-            <img src="https://raw.githubusercontent.com/eibertt/mine-usdt-galaxy/main/assets/sonda_nano.png" width="60">
-            <div style="flex-grow: 1; text-align: left;">
-                <div style="font-weight: bold;">Sonda Nano</div>
-                <div style="color: #2ebd85; font-size: 12px;">+30 T-Coins/h</div>
-                <div style="color: var(--gold); font-size: 14px; font-weight: bold;">1.00 USDT</div>
+    <section id="home" class="page active-page">
+        <div class="balance-display">
+            <img src="assets/tcoin.png" class="coin-icon">
+            <h1 id="bal">0</h1>
+        </div>
+        <div class="robot-container">
+            <img src="assets/robot1.png" id="main-robot" class="robot-img neon-pulse" onclick="handleTap(event)">
+        </div>
+        <div class="user-stats">
+            <span>Nivel <span id="lvl-num">1</span></span>
+            <div class="xp-bar-container">
+                <div id="xp-fill" class="xp-fill" style="width: 0%"></div>
             </div>
-            <button class="btn-buy-now">COMPRAR</button>
         </div>
+    </section>
 
-        <div class="shop-item">
-            <img src="https://raw.githubusercontent.com/eibertt/mine-usdt-galaxy/main/assets/crucero_estelar.png" width="60">
-            <div style="flex-grow: 1; text-align: left;">
-                <div style="font-weight: bold;">Crucero Estelar</div>
-                <div style="color: #2ebd85; font-size: 12px;">+150 T-Coins/h</div>
-                <div style="color: var(--gold); font-size: 14px; font-weight: bold;">5.00 USDT</div>
+    <section id="casino" class="page">
+        <h2 class="gold-glow">Casino Galáctico</h2>
+        <div class="glass-panel casino-card">
+            <h3>🎰 Ruleta de la Suerte</h3>
+            <p>Costo: 1,000 T-Coins</p>
+            <button class="btn-action-main" onclick="spinGalacticWheel()">GIRAR AHORA</button>
+        </div>
+        <div class="glass-panel casino-card" style="margin-top:20px;">
+            <h3>🎲 Dados Espaciales</h3>
+            <button class="btn-buy" onclick="playSpaceDice(1000, 'high')">APOSTAR ALTO</button>
+        </div>
+    </section>
+
+    <section id="earnings" class="page">
+        <h2>Flota de Minado</h2>
+        <div class="ships-scroll">
+            <div class="ship-card">
+                <img src="assets/nave1.png">
+                <h3>Sonda Nano</h3>
+                <p>30 T-Coin / h</p>
+                <button class="btn-buy">1 USDT</button>
             </div>
-            <button class="btn-buy-now">COMPRAR</button>
+            <div class="ship-card gold-border">
+                <img src="assets/nave5.png" class="gold-glow">
+                <h3>Imperial Dorada</h3>
+                <p>5,000 T-Coin / h</p>
+                <button class="btn-buy">100 USDT</button>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <div id="wallet" class="page">
-        <div class="glass-card" style="margin-top: 40px;">
-            <i class="fas fa-wallet" style="font-size: 40px; color: var(--main-blue); margin-bottom: 15px;"></i>
-            <h3>Cartera Digital</h3>
-            <p>Retiro mínimo: 2.00 USDT</p>
-            <button class="btn-buy-now" style="width: 100%; padding: 15px; background: var(--main-blue);">RETIRAR FONDOS</button>
+    <section id="tasks" class="page">
+        <h2>Misiones</h2>
+        <div class="glass-panel task-item" onclick="copyMyReferralLink()">
+            <h4>📢 Invitar Amigos</h4>
+            <p>Gana 2,500 T-Coins por referido</p>
         </div>
-    </div>
+        <div class="glass-panel task-item" onclick="openTaskLink('blog_visit')">
+            <h4>🌐 Portal TecnoHoy</h4>
+            <p>Visita nuestro blog y gana 1,000 T-Coins</p>
+        </div>
+    </section>
+
+    <section id="wallet" class="page">
+        <h2>Tu Bóveda</h2>
+        <div class="asset-card tcoin-glow">
+            <span>T-Coins</span>
+            <span id="wallet-tcoin">0</span>
+        </div>
+        <div class="asset-card usdt-glow">
+            <span>USDT</span>
+            <span>0.00</span>
+        </div>
+        <button class="btn-action-main" onclick="openSwap()">INTERCAMBIAR (SWAP)</button>
+    </section>
 
     <nav class="navbar">
-        <div class="nav-link active" onclick="nav('home', this)"><i class="fas fa-rocket"></i>Home</div>
-        <div class="nav-link" onclick="nav('earnings', this)"><i class="fas fa-store"></i>Tienda</div>
-        <div class="nav-link" onclick="nav('wallet', this)"><i class="fas fa-wallet"></i>Wallet</div>
+        <div class="nav-link active" onclick="showPage('home', this)">🏠<br>Home</div>
+        <div class="nav-link" onclick="showPage('casino', this)">🎰<br>Casino</div>
+        <div class="nav-link" onclick="showPage('earnings', this)">🚀<br>Naves</div>
+        <div class="nav-link" onclick="showPage('tasks', this)">📋<br>Tareas</div>
+        <div class="nav-link" onclick="showPage('wallet', this)">💰<br>Wallet</div>
     </nav>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.enableClosingConfirmation();
-
-        if(tg.initDataUnsafe.user) {
-            document.getElementById('u-name').innerText = tg.initDataUnsafe.user.first_name;
-            if(tg.initDataUnsafe.user.photo_url) document.getElementById('u-img').src = tg.initDataUnsafe.user.photo_url;
-        }
-
-        function nav(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active-page');
-            el.classList.add('active');
-            tg.HapticFeedback.impactOccurred('light');
-        }
-
-        let coins = 0;
-        function doMine() {
-            coins += 0.01;
-            document.getElementById('bal').innerText = coins.toFixed(2);
-            tg.HapticFeedback.impactOccurred('medium');
-        }
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
     <script src="wallet.js"></script>
- </body>
+    <script src="tasks.js"></script>
+    <script src="casino.js"></script>
+
+    <script>
+        // Lógica para cambiar de página sin recargar
+        function showPage(pageId, element) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            // Mostrar la elegida
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // Actualizar botones de la navbar
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            element.classList.add('active');
+
+            // Feedback táctil de Telegram
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
+    </script>
+</body>
 </html>
