@@ -1,39 +1,55 @@
-// referrals.js - Lógica de Crecimiento Galáctico
+// tasks.js - Misiones, Anuncios y Referidos
 
-const REFERRAL_CONFIG = {
-    guest_bonus: 1000,    // Bono para el que entra
-    host_bonus: 2500,     // Bono para el que invita
-    mining_commission: 0.10 // 10% de comisión
-};
-
-// Generar el link único con el ID de Telegram del usuario
-function getInviteLink() {
-    const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-    return `https://t.me/TCoinClickerBot?start=${userId}`;
-}
-
-// Función para copiar al portapapeles
-function shareLink() {
-    const link = getInviteLink();
-    navigator.clipboard.writeText(link).then(() => {
-        window.Telegram.WebApp.showAlert("🚀 ¡Enlace copiado! Compártelo para ganar 2,500 T-Coins por cada amigo.");
-        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-    });
-}
-
-// Lógica de Tareas (Misiones)
-const tasks = [
-    { id: 1, desc: "Unirse al canal Portal TecnoHoy", reward: 5000 },
-    { id: 2, desc: "Seguir en X (Twitter)", reward: 3000 },
-    { id: 3, desc: "Invitar a 5 amigos", reward: 15000 }
+const USER_TASKS = [
+    { 
+        id: "invite_5", 
+        title: "Recluta Galáctico", 
+        desc: "Invita a 5 amigos al bot", 
+        reward: 15000, 
+        type: "referral" 
+    },
+    { 
+        id: "ad_1", 
+        title: "Ver Anuncio", 
+        desc: "Mira un video para ganar T-Coins", 
+        reward: 500, 
+        type: "ad",
+        link: "https://t.me/TuOtroBot" // Aquí colocarás el enlace al otro bot
+    },
+    { 
+        id: "blog_visit", 
+        title: "Explorar Portal TecnoHoy", 
+        desc: "Lee nuestra última noticia tecnológica", 
+        reward: 1000, 
+        type: "link",
+        link: "https://portaltecnohoy.com"
+    }
 ];
 
-function claimTaskReward(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    // Aquí se conectaría con el bot para verificar la acción
-    window.Telegram.WebApp.showConfirm(`¿Has completado la tarea: ${task.desc}?`, (confirmed) => {
-        if(confirmed) {
-            window.Telegram.WebApp.showAlert(`¡Revisando! Si es correcto, recibirás ${task.reward} T-Coins.`);
-        }
-    });
+// Función para abrir enlaces de anuncios o bots
+function openTaskLink(taskId) {
+    const task = USER_TASKS.find(t => t.id === taskId);
+    
+    if (task.link) {
+        // Abrimos el enlace externo o el otro bot
+        window.Telegram.WebApp.openLink(task.link);
+        
+        // Notificamos que debe completar la acción
+        setTimeout(() => {
+            window.Telegram.WebApp.showConfirm(`¿Completaste la tarea: ${task.title}?`, (ok) => {
+                if(ok) {
+                    window.Telegram.WebApp.showAlert(`¡Revisando! Recibirás ${task.reward} T-Coins pronto.`);
+                }
+            });
+        }, 2000);
+    }
+}
+
+// Función para copiar el link de referido (lo que hablamos de los cálculos)
+function copyMyReferralLink() {
+    const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    const link = `https://t.me/TCoinClickerBot?start=${userId}`;
+    
+    navigator.clipboard.writeText(link);
+    window.Telegram.WebApp.showAlert("¡Link de invitación copiado! Gana por cada amigo que se una.");
 }
