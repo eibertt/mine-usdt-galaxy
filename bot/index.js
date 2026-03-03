@@ -1,20 +1,19 @@
 const { Bot, InlineKeyboard } = require("grammy");
-require("dotenv").config();
 
-// Iniciamos el bot con el Token del archivo .env
+// Aquí el bot leerá el token que configuraremos luego
 const bot = new Bot(process.env.BOT_TOKEN);
 
+// Comando /start: La bienvenida al imperio minero
 bot.command("start", (ctx) => {
-  const keyboard = new InlineKeyboard()
-    .webApp("🚀 Jugar ahora", "https://tu-juego.com") // Aquí irá el link de tu frontend
-    .row()
-    .url("📢 Canal Oficial", "https://t.me/TuCanal");
+    const keyboard = new InlineKeyboard()
+        .webApp("🚀 Jugar Ahora", "https://tu-enlace-aqui.com") // Aquí irá tu link del frontend
+        .row()
+        .url("📢 Canal Oficial", "https://t.me/TuCanal");
 
-  ctx.reply(
-    `🛸 ¡Bienvenido a Space Miners, Capitán ${ctx.from.first_name}!\n\n` +
-    "Tu flota está lista para extraer T-Coins. ¿Estás listo para conquistar la galaxia?",
-    { reply_markup: keyboard }
-  );
+    ctx.reply(`¡Bienvenido al espacio, Capitán ${ctx.from.first_name}! 👨‍🚀\n\n` +
+              "Prepárate para extraer USDT en la galaxia más lucrativa de Telegram.\n\n" +
+              "Poder de minado actual: 0 T-Coins/h\n" +
+              "Tu flota te espera.", { reply_markup: keyboard });
 });
 
 bot.start();
