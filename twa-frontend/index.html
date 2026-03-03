@@ -2,41 +2,83 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Miners UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Space Miners Game</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --main-blue: #00d4ff; --gold: #ffcc00; --bg-dark: #090a0f; }
+        body { background: var(--bg-dark); color: white; font-family: sans-serif; margin: 0; overflow: hidden; }
+        
+        /* Esquinas Superiores */
+        .top-bar { display: flex; justify-content: space-between; padding: 15px; position: absolute; width: 100%; box-sizing: border-box; z-index: 10; }
+        .user-info { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; }
+        .user-info img { width: 25px; border-radius: 50%; }
+        .settings-btn { background: rgba(255,255,255,0.1); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; color: white; }
+
+        /* Contenedor de Pestañas */
+        .page { display: none; height: 100vh; padding-top: 70px; text-align: center; }
+        .active-page { display: flex; flex-direction: column; align-items: center; }
+
+        /* Navbar Inferior */
+        .navbar { position: fixed; bottom: 0; width: 100%; background: #161b22; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #30363d; }
+        .nav-item { color: #8b949e; text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-item.active { color: var(--main-blue); }
+        .nav-item i { font-size: 20px; }
+    </style>
 </head>
 <body>
-    <div id="game-container">
-        <header>
-            <h1>🚀 SPACE MINERS</h1>
-            <div class="user-info">
-                <span id="username">Cargando...</span>
-            </div>
-        </header>
 
-        <section class="stats">
-            <div class="stat-box">
-                <p>💰 T-Coins</p>
-                <h2 id="balance">0.00</h2>
-            </div>
-            <div class="stat-box">
-                <p>⛽ Combustible</p>
-                <div class="progress-bg">
-                    <div id="fuel-bar" style="width: 100%;"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="ship-display">
-            <img id="ship-img" src="../assets/sonda-nano.png" alt="Tu Nave">
-            <p id="ship-name">Sonda Nano</p>
-        </section>
-
-        <button id="mine-btn" onclick="mineClick()">⛏️ MINAR T-COINS</button>
+    <div class="top-bar">
+        <div class="user-info">
+            <img id="user-pic" src="https://via.placeholder.com/25" alt="">
+            <span id="user-name">Capitán</span>
+        </div>
+        <button class="settings-btn" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
     </div>
 
-    <script src="app.js"></script>
+    <div id="home" class="page active-page">
+        <h2 style="color: var(--main-blue)">CABINA DE MANDO</h2>
+        <img src="https://raw.githubusercontent.com/eibertt/mine-usdt-galaxy/main/bot/ship.png" style="width: 60%; margin: 20px 0;">
+        <div style="font-size: 24px; color: var(--gold)">💰 <span id="bal">0.00</span> T-Coins</div>
+        <button onclick="mine()" style="margin-top: 20px; padding: 20px; border-radius: 50%; border: none; background: var(--main-blue); font-weight: bold; width: 100px; height: 100px;">MINAR</button>
+    </div>
+
+    <div id="earnings" class="page">
+        <h2>CENTRO DE MINADO</h2>
+        <p>Aquí aparecerán tus naves disponibles.</p>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="showPage('earnings', this)"><i class="fas fa-rocket"></i>Earnings</div>
+        <div class="nav-item" onclick="showPage('group', this)"><i class="fas fa-users"></i>Group</div>
+        <div class="nav-item" onclick="showPage('wallet', this)"><i class="fas fa-wallet"></i>Wallet</div>
+    </nav>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Cargar datos de usuario de Telegram
+        if (tg.initDataUnsafe.user) {
+            document.getElementById('user-name').innerText = tg.initDataUnsafe.user.first_name;
+            if (tg.initDataUnsafe.user.photo_url) document.getElementById('user-pic').src = tg.initDataUnsafe.user.photo_url;
+        }
+
+        function showPage(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active-page');
+            element.classList.add('active');
+        }
+
+        let balance = 0;
+        function mine() {
+            balance += 0.01;
+            document.getElementById('bal').innerText = balance.toFixed(2);
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+        }
+    </script>
 </body>
 </html>
