@@ -1,26 +1,17 @@
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const cors = require('cors');
-require('dotenv').config();
+-- Estructura de la Base de Datos para Space Miners
+CREATE TABLE IF NOT EXISTS players (
+    id BIGINT PRIMARY KEY,           -- El ID de Telegram del usuario
+    name TEXT,                       -- Nombre del jugador
+    tcoins FLOAT DEFAULT 0,          -- Saldo de T-Coins acumulados
+    usdt FLOAT DEFAULT 0,            -- Saldo de USDT para retiros
+    xp INT DEFAULT 0,                -- Experiencia para evolucionar robots
+    level INT DEFAULT 1,             -- Nivel actual del robot (1-5)
+    last_claim TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// Conexión a la base de datos (Usaremos SQLite por simplicidad inicial)
-const db = new sqlite3.Database('./space_miners.db');
-
-// Ruta para ver el saldo de un jugador
-app.get('/api/player/:id', (req, res) => {
-    const telegramId = req.params.id;
-    db.get("SELECT * FROM players WHERE telegram_id = ?", [telegramId], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(row);
-    });
-});
-
-// Iniciar servidor en el puerto 3000
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor de Space Miners corriendo en el puerto ${PORT}`);
-});
+CREATE TABLE IF NOT EXISTS ships (
+    player_id BIGINT,
+    ship_type INT,                   -- 1: Sonda, 5: Imperial Dorada, etc.
+    hourly_rate FLOAT,               -- T-Coins que genera por hora
+    FOREIGN KEY(player_id) REFERENCES players(id)
+);
