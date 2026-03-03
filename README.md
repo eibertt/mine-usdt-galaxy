@@ -1,30 +1,34 @@
-# 🚀 Space Miners: USDT & T-Coin Ecosystem
+# 🚀 Space Miners - Tap-to-Earn Game
 
-Bienvenido al repositorio central de **Space Miners**, un simulador de minería espacial con una economía real y sostenible diseñada para el largo plazo.
+Bienvenido a **Space Miners**, un ecosistema de minería espacial en Telegram donde puedes gestionar tu propia flota de naves, extraer **T-Coins** y convertirlos en recompensas reales.
 
-## 📊 Economía del Juego (GameFi)
-El ecosistema se basa en la adquisición de naves mediante **USDT** y la generación pasiva de **T-Coins**.
+## 🛸 Flota de Naves y Economía
+Nuestras naves están diseñadas para diferentes niveles de inversión y retorno (ROI) [cite: 2026-03-01].
 
-### 🛸 Flota de Naves
-- **Nivel de Entrada:** Naves desde **3 USDT** (Sonda Nano) y **5 USDT** (Dron de Carga) con ROI de 40 días.
-- **Nivel Élite:** Naves hasta **1,000 USDT** (Nodriza Estelar) con ROI optimizado de 30 días.
+| Nave | Precio (USDT) | Minado (T-Coins/h) |
+| :--- | :--- | :--- |
+| **Sonda Nano** | 3 USDT | 0.5 T-Coins |
+| **Explorador** | 10 USDT | 1.8 T-Coins |
+| **Minero** | 30 USDT | 5.5 T-Coins |
+| **Fragata** | 100 USDT | 19 T-Coins |
+| **Crucero Estelar** | 300 USDT | 58 T-Coins |
+| **Acorazado** | 500 USDT | 100 T-Coins |
+| **Nodriza Estelar** | 1,000 USDT | 210 T-Coins |
 
-### ⛽ Sistema de Combustible (Retención)
-Para garantizar la estabilidad del token, las naves requieren recargas manuales según el nivel de tanque:
-- **Nivel 1:** 3 Horas (Base - Gratis)
-- **Nivel 2:** 8 Horas (2 USDT)
-- **Nivel 3:** 16 Horas (5 USDT)
-- **Nivel 4:** 24 Horas (10 USDT)
+## 👥 Sistema de Referidos (Bono de Equipo)
+¡Crece con tus amigos y gana comisiones instantáneas! [cite: 2026-03-01]
 
-### 🤖 Mejoras de Robots
-Sistemas de optimización que aumentan la producción hasta un **10%** y activan la "Minería Crítica" (probabilidad de x2 en recompensas).
+* **Nivel 1 (Directos):** Recibe un **7%** de cada compra de nave en USDT [cite: 2026-03-01].
+* **Nivel 2 (Indirectos):** Recibe un **3%** de cada compra de nave en USDT [cite: 2026-03-01].
+* **Bono de Producción:** Gana el **3%** de los T-Coins que minen tus referidos directos [cite: 2026-03-01].
 
-## 👥 Programa de Referidos
-- **Bono por Compra:** 7% en Créditos de Juego (Reinversión obligatoria).
-- **Bono de Minado:** 3% de la producción diaria del referido en T-Coins.
+## 🛠️ Estructura del Proyecto
+* `/bot`: Lógica del Bot de Telegram (GrammY).
+* `/twa-frontend`: Interfaz visual del juego (HTML/CSS/JS).
+* `/backend`: Servidor de base de datos y procesamiento de pagos.
+* `/contracts`: Documentación de lógica financiera y seguridad.
+* `/assets`: Galería de naves y recursos visuales.
 
-## 🎰 Mecanismo de Quema (Casino)
-El juego integra un **Casino Espacial** con un *House Edge* del 10%, diseñado para absorber el exceso de T-Coins circulantes y mantener el valor del token estable.
-
----
-**Estado del Proyecto:** Fase de Arquitectura y Configuración Inicial.
+## 🏦 Reglas de Retiro
+* **Mínimo:** 10 USDT equivalentes en T-Coins [cite: 2026-03-01].
+* **Comisión:** 5% por mantenimiento del servidor [cite: 2026-03-01].
