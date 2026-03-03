@@ -1,27 +1,26 @@
-// Inicializar la Web App de Telegram
-const tg = window.Telegram.WebApp;
-tg.expand(); // Abre el juego en pantalla completa
-
-let balance = 0;
-let fuel = 100;
-
-// Mostrar el nombre del usuario de Telegram
-document.getElementById('username').innerText = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "Minero";
-
-function mineClick() {
+function mineClick(event) {
     if (fuel > 0) {
-        // Lógica básica de minería (basado en la Sonda Nano: 0.5 T-Coins/h)
-        // Por ahora lo hacemos por click para probar
-        balance += 0.01; 
+        balance += 0.01;
         fuel -= 1;
-        
         updateUI();
-    } else {
-        alert("¡Sin combustible! Espera a que se recargue.");
-    }
-}
 
-function updateUI() {
-    document.getElementById('balance').innerText = balance.toFixed(2);
-    document.getElementById('fuel-bar').style.width = fuel + "%";
+        // Crear el número flotante (+0.01)
+        const clickText = document.createElement('div');
+        clickText.innerText = '+0.01';
+        clickText.className = 'floating-text';
+        
+        // Posicionar donde el usuario hizo clic o tocó
+        const x = event.clientX || event.touches[0].clientX;
+        const y = event.clientY || event.touches[0].clientY;
+        
+        clickText.style.left = `${x}px`;
+        clickText.style.top = `${y}px`;
+
+        document.body.appendChild(clickText);
+
+        // Borrar el elemento después de la animación (1 segundo)
+        setTimeout(() => {
+            clickText.remove();
+        }, 1000);
+    }
 }
