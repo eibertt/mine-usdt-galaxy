@@ -7,6 +7,7 @@ const bot = new Bot(process.env.BOT_TOKEN);
 bot.command("start", async (ctx) => {
     // Enlace a tu juego en GitHub Pages
     const gameUrl = "https://eibertt.github.io/mine-usdt-galaxy/twa-frontend/index.html";
+
     
     const keyboard = new InlineKeyboard()
         .webApp("🚀 ¡EMPEZAR A MINAR!", gameUrl)
