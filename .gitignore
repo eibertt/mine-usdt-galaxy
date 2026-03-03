@@ -137,3 +137,17 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Secretos y Configuración
+.env
+.env.local
+
+# Dependencias (Esto es vital para que no se suban miles de archivos basura)
+node_modules/
+dist/
+build/
+
+# Base de datos local
+*.db
+*.sqlite
+
