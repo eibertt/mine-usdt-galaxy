@@ -1,11 +1,11 @@
-# 🚀 Space Miners - Tap-to-Earn Game
+# 🚀 Space Miners - Tap-to-Earn
 
-Bienvenido a **Space Miners**, un ecosistema de minería espacial en Telegram donde puedes gestionar tu propia flota de naves, extraer **T-Coins** y convertirlos en recompensas reales.
+¡Bienvenido a la frontera espacial! **Space Miners** es un juego de minería en Telegram donde construyes tu flota para ganar **T-Coins** y recompensas en USDT [cite: 2026-03-01].
 
-## 🛸 Flota de Naves y Economía
-Nuestras naves están diseñadas para diferentes niveles de inversión y retorno (ROI) [cite: 2026-03-01].
+## 🛸 Nuestra Flota (Economía)
+Cada nave tiene un costo y un poder de minería único [cite: 2026-03-01].
 
-| Nave | Precio (USDT) | Minado (T-Coins/h) |
+| Nave | Inversión | Minado (h) |
 | :--- | :--- | :--- |
 | **Sonda Nano** | 3 USDT | 0.5 T-Coins |
 | **Explorador** | 10 USDT | 1.8 T-Coins |
@@ -13,22 +13,21 @@ Nuestras naves están diseñadas para diferentes niveles de inversión y retorno
 | **Fragata** | 100 USDT | 19 T-Coins |
 | **Crucero Estelar** | 300 USDT | 58 T-Coins |
 | **Acorazado** | 500 USDT | 100 T-Coins |
-| **Nodriza Estelar** | 1,000 USDT | 210 T-Coins |
+| **Nodriza Estelar**| 1,000 USDT| 210 T-Coins |
 
-## 👥 Sistema de Referidos (Bono de Equipo)
-¡Crece con tus amigos y gana comisiones instantáneas! [cite: 2026-03-01]
+> [!TIP]
+> ¡El ROI está diseñado para recompensar a los mineros más constantes! [cite: 2026-03-01]
 
-* **Nivel 1 (Directos):** Recibe un **7%** de cada compra de nave en USDT [cite: 2026-03-01].
-* **Nivel 2 (Indirectos):** Recibe un **3%** de cada compra de nave en USDT [cite: 2026-03-01].
-* **Bono de Producción:** Gana el **3%** de los T-Coins que minen tus referidos directos [cite: 2026-03-01].
+## 👥 Sistema de Referidos
+Gana mientras invitas a otros capitanes a la galaxia [cite: 2026-03-01]:
+* **Nivel 1:** 7% de comisión directa en USDT [cite: 2026-03-01].
+* **Nivel 2:** 3% de comisión indirecta en USDT [cite: 2026-03-01].
+* **Bono Extra:** 3% de la minería diaria de tus referidos directos [cite: 2026-03-01].
 
-## 🛠️ Estructura del Proyecto
-* `/bot`: Lógica del Bot de Telegram (GrammY).
-* `/twa-frontend`: Interfaz visual del juego (HTML/CSS/JS).
-* `/backend`: Servidor de base de datos y procesamiento de pagos.
-* `/contracts`: Documentación de lógica financiera y seguridad.
-* `/assets`: Galería de naves y recursos visuales.
+## 🏦 Reglas Financieras
+* **Mínimo de retiro:** 10 USDT [cite: 2026-03-01].
+* **Comisión por retiro:** 5% [cite: 2026-03-01].
+* **Pagos:** Procesados a través de la red TON/USDT [cite: 2026-03-01].
 
-## 🏦 Reglas de Retiro
-* **Mínimo:** 10 USDT equivalentes en T-Coins [cite: 2026-03-01].
-* **Comisión:** 5% por mantenimiento del servidor [cite: 2026-03-01].
+---
+Desarrollado para la comunidad de Telegram 2026. 🌌
