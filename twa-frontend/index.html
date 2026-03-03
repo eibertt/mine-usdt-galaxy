@@ -11,7 +11,7 @@
 
     <header class="top-bar">
         <div class="user-profile" onclick="openProfile()">
-            <img src="assets/robot1.png" id="user-avatar" class="avatar-mini">
+            <img src="../assets/robot1.png" id="user-avatar" class="avatar-mini">
             <span id="user-name">Cargando...</span>
         </div>
         <div class="settings-icon" onclick="openSettings()">
@@ -21,11 +21,11 @@
 
     <section id="home" class="page active-page">
         <div class="balance-display">
-            <img src="assets/tcoin.png" class="coin-icon">
+            <img src="../assets/tcoin.png" class="coin-icon">
             <h1 id="bal">0</h1>
         </div>
         <div class="robot-container">
-            <img src="assets/robot1.png" id="main-robot" class="robot-img neon-pulse" onclick="handleTap(event)">
+            <img src="../assets/robot1.png" id="main-robot" class="robot-img neon-pulse" onclick="handleTap(event)">
         </div>
         <div class="user-stats">
             <span>Nivel <span id="lvl-num">1</span></span>
@@ -52,13 +52,13 @@
         <h2>Flota de Minado</h2>
         <div class="ships-scroll">
             <div class="ship-card">
-                <img src="assets/nave1.png">
+                <img src="../assets/nave1.png">
                 <h3>Sonda Nano</h3>
                 <p>30 T-Coin / h</p>
                 <button class="btn-buy">1 USDT</button>
             </div>
             <div class="ship-card gold-border">
-                <img src="assets/nave5.png" class="gold-glow">
+                <img src="../assets/nave5.png" class="gold-glow">
                 <h3>Imperial Dorada</h3>
                 <p>5,000 T-Coin / h</p>
                 <button class="btn-buy">100 USDT</button>
@@ -74,21 +74,21 @@
         </div>
         <div class="glass-panel task-item" onclick="openTaskLink('blog_visit')">
             <h4>🌐 Portal TecnoHoy</h4>
-            <p>Visita nuestro blog y gana 1,000 T-Coins</p>
+            <p>Gana 1,000 T-Coins por visita</p>
         </div>
     </section>
 
     <section id="wallet" class="page">
         <h2>Tu Bóveda</h2>
         <div class="asset-card tcoin-glow">
-            <span>T-Coins</span>
+            <img src="../assets/tcoin.png" width="20"> <span>T-Coins</span>
             <span id="wallet-tcoin">0</span>
         </div>
         <div class="asset-card usdt-glow">
-            <span>USDT</span>
+            <span>💵 USDT</span>
             <span>0.00</span>
         </div>
-        <button class="btn-action-main" onclick="openSwap()">INTERCAMBIAR (SWAP)</button>
+        <button class="btn-action-main" onclick="openSwap()">CAMBIAR A USDT</button>
     </section>
 
     <nav class="navbar">
@@ -102,22 +102,16 @@
     <script src="auth.js"></script>
     <script src="app.js"></script>
     <script src="wallet.js"></script>
-    <script src="tasks.js"></script>
+    <script src="referrals.js"></script>
     <script src="casino.js"></script>
 
     <script>
-        // Lógica para cambiar de página sin recargar
+        // Controlador de navegación entre las 5 secciones
         function showPage(pageId, element) {
-            // Ocultar todas las páginas
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            // Mostrar la elegida
             document.getElementById(pageId).classList.add('active-page');
-            
-            // Actualizar botones de la navbar
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             element.classList.add('active');
-
-            // Feedback táctil de Telegram
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         }
     </script>
