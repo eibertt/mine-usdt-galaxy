@@ -3,117 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Space Miners - Galaxy</title>
+    <title>Game Galaxia USDT</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div id="app-container">
+        
+        <main id="content-area">
+            
+            <section id="home-view" class="page-view active">
+                <div class="header">
+                    <h2>Imperial Dorada</h2>
+                    <p class="subtitle">5,000 T-Coin / h</p>
+                    <span class="badge">100 USDT</span>
+                </div>
+                <div class="main-mining-area">
+                    <img src="../assets/robot2.png" alt="Robot Minero" style="max-width: 200px;">
+                    <h3>Bóveda Actual</h3>
+                    <p>T-Coins: 0</p>
+                    <p>USDT: 0.00</p>
+                </div>
+            </section>
 
-    <header class="top-bar">
-        <div class="user-profile" onclick="openProfile()">
-            <img src="../assets/robot1.png" id="user-avatar" class="avatar-mini">
-            <span id="user-name">Cargando...</span>
-        </div>
-        <div class="settings-icon" onclick="openSettings()">
-            ⚙️
-        </div>
-    </header>
+            <section id="group-view" class="page-view">
+                <h2>Group</h2>
+                <div class="card">
+                    <h3><i class="fas fa-bullhorn"></i> Invitar Amigos</h3>
+                    <p>Gana 2,500 T-Coins por referido</p>
+                </div>
+            </section>
 
-    <section id="home" class="page active-page">
-        <div class="balance-display">
-            <img src="../assets/tcoin.png" class="coin-icon">
-            <h1 id="bal">0</h1>
-        </div>
-        <div class="robot-container">
-            <img src="../assets/robot1.png" id="main-robot" class="robot-img neon-pulse" onclick="handleTap(event)">
-        </div>
-        <div class="user-stats">
-            <span>Nivel <span id="lvl-num">1</span></span>
-            <div class="xp-bar-container">
-                <div id="xp-fill" class="xp-fill" style="width: 0%"></div>
-            </div>
-        </div>
-    </section>
+            <section id="earnings-view" class="page-view">
+                <h2>Earnings</h2>
+                <div class="card">
+                    <h3><i class="fas fa-globe"></i> Portal TecnoHoy</h3>
+                    <p>Gana 1,000 T-Coins por visita</p>
+                </div>
+            </section>
 
-    <section id="casino" class="page">
-        <h2 class="gold-glow">Casino Galáctico</h2>
-        <div class="glass-panel casino-card">
-            <h3>🎰 Ruleta de la Suerte</h3>
-            <p>Costo: 1,000 T-Coins</p>
-            <button class="btn-action-main" onclick="spinGalacticWheel()">GIRAR AHORA</button>
-        </div>
-        <div class="glass-panel casino-card" style="margin-top:20px;">
-            <h3>🎲 Dados Espaciales</h3>
-            <button class="btn-buy" onclick="playSpaceDice(1000, 'high')">APOSTAR ALTO</button>
-        </div>
-    </section>
+            <section id="accelerate-view" class="page-view">
+                <h2>Accelerate (Naves)</h2>
+                <p>Aquí irá el listado de naves para comprar y aumentar el minado.</p>
+            </section>
 
-    <section id="earnings" class="page">
-        <h2>Flota de Minado</h2>
-        <div class="ships-scroll">
-            <div class="ship-card">
-                <img src="../assets/nave1.png">
-                <h3>Sonda Nano</h3>
-                <p>30 T-Coin / h</p>
-                <button class="btn-buy">1 USDT</button>
-            </div>
-            <div class="ship-card gold-border">
-                <img src="../assets/nave5.png" class="gold-glow">
-                <h3>Imperial Dorada</h3>
-                <p>5,000 T-Coin / h</p>
-                <button class="btn-buy">100 USDT</button>
-            </div>
-        </div>
-    </section>
+            <section id="wallet-view" class="page-view">
+                <h2>Wallet</h2>
+                <button class="action-btn">CAMBIAR A USDT</button>
+            </section>
 
-    <section id="tasks" class="page">
-        <h2>Misiones</h2>
-        <div class="glass-panel task-item" onclick="copyMyReferralLink()">
-            <h4>📢 Invitar Amigos</h4>
-            <p>Gana 2,500 T-Coins por referido</p>
-        </div>
-        <div class="glass-panel task-item" onclick="openTaskLink('blog_visit')">
-            <h4>🌐 Portal TecnoHoy</h4>
-            <p>Gana 1,000 T-Coins por visita</p>
-        </div>
-    </section>
+        </main>
 
-    <section id="wallet" class="page">
-        <h2>Tu Bóveda</h2>
-        <div class="asset-card tcoin-glow">
-            <img src="../assets/tcoin.png" width="20"> <span>T-Coins</span>
-            <span id="wallet-tcoin">0</span>
-        </div>
-        <div class="asset-card usdt-glow">
-            <span>💵 USDT</span>
-            <span>0.00</span>
-        </div>
-        <button class="btn-action-main" onclick="openSwap()">CAMBIAR A USDT</button>
-    </section>
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchTab('home-view', this)">
+                <div class="icon-wrapper"><i class="fas fa-home"></i></div>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('group-view', this)">
+                <div class="icon-wrapper"><i class="fas fa-user-friends"></i></div>
+                <span>Group</span>
+            </button>
+            <button class="nav-item center-btn" onclick="switchTab('earnings-view', this)">
+                <div class="icon-wrapper"><i class="fas fa-space-shuttle"></i></div>
+                <span>Earnings</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('accelerate-view', this)">
+                <div class="icon-wrapper"><i class="fas fa-rocket"></i></div>
+                <span>Accelerate</span>
+            </button>
+            <button class="nav-item" onclick="switchTab('wallet-view', this)">
+                <div class="icon-wrapper"><i class="fas fa-wallet"></i></div>
+                <span>Wallet</span>
+            </button>
+        </nav>
 
-    <nav class="navbar">
-        <div class="nav-link active" onclick="showPage('home', this)">🏠<br>Home</div>
-        <div class="nav-link" onclick="showPage('casino', this)">🎰<br>Casino</div>
-        <div class="nav-link" onclick="showPage('earnings', this)">🚀<br>Naves</div>
-        <div class="nav-link" onclick="showPage('tasks', this)">📋<br>Tareas</div>
-        <div class="nav-link" onclick="showPage('wallet', this)">💰<br>Wallet</div>
-    </nav>
-
-    <script src="auth.js"></script>
+    </div>
     <script src="app.js"></script>
-    <script src="wallet.js"></script>
-    <script src="referrals.js"></script>
-    <script src="casino.js"></script>
-
-    <script>
-        // Controlador de navegación entre las 5 secciones
-        function showPage(pageId, element) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(pageId).classList.add('active-page');
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            element.classList.add('active');
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-        }
-    </script>
 </body>
 </html>
