@@ -1,4 +1,4 @@
-// Función para cambiar entre pestañas
+// Función intacta para cambiar entre pestañas sin recargar la página
 function switchTab(tabId, clickedElement) {
     // 1. Ocultamos todas las vistas
     const views = document.querySelectorAll('.page-view');
@@ -12,9 +12,9 @@ function switchTab(tabId, clickedElement) {
         btn.classList.remove('active');
     });
 
-    // 3. Mostramos la vista correspondiente al botón clickeado
+    // 3. Mostramos la vista correspondiente
     document.getElementById(tabId).classList.add('active');
 
-    // 4. Activamos visualmente el botón que el usuario clickeó
+    // 4. Activamos visualmente el botón
     clickedElement.classList.add('active');
 }
