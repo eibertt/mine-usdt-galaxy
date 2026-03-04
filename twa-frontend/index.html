@@ -28,25 +28,25 @@
                     </div>
                     <div class="stat-card">
                         <span class="stat-title">Ingresos por hora</span>
-                        <div class="stat-value"><img src="../assets/tcoin.png" width="12"> +5,59K</div>
+                        <div class="stat-value"><img src="../assets/tcoin.png" width="12"> +0</div>
                     </div>
                     <div class="stat-card">
                         <span class="stat-title">Energía</span>
-                        <div class="stat-value"><i class="fas fa-bolt" style="color: #ffd700;"></i> 2500/2500</div>
+                        <div class="stat-value"><i class="fas fa-bolt" style="color: #00f2ff;"></i> <span id="energy-text">2500/2500</span></div>
                     </div>
                 </div>
 
                 <div class="balance-container">
                     <img src="../assets/tcoin.png" alt="T-Coin" class="main-coin-icon">
-                    <h1 id="main-balance">51.342</h1>
+                    <h1 id="main-balance">0</h1>
                 </div>
 
                 <div class="rank-container">
                     <div class="rank-info">
-                        <span>Rango 4/15</span>
+                        <span>Rango 1/15</span>
                         <span><img src="../assets/tcoin.png" width="10"> 5.000.000 ></span>
                     </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 35%;"></div></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 5%;"></div></div>
                 </div>
 
                 <div class="robot-clicker-area">
@@ -65,14 +65,14 @@
                 </div>
                 <div class="bonus-container">
                     <div class="bonus-card">
-                        <div class="bonus-icon"><i class="fas fa-gift" style="color:#ffd700; font-size: 24px;"></i></div>
+                        <div class="bonus-icon"><i class="fas fa-gift" style="color:#00f2ff; font-size: 24px;"></i></div>
                         <div class="bonus-info">
                             <span class="bonus-title">Invitar un amigo</span>
                             <span class="bonus-amount"><img src="../assets/tcoin.png" width="12"> +5.000</span>
                         </div>
                     </div>
                     <div class="bonus-card premium">
-                        <div class="bonus-icon"><i class="fas fa-gem" style="color:#5390d9; font-size: 24px;"></i></div>
+                        <div class="bonus-icon"><i class="fas fa-gem" style="color:#7b2cbf; font-size: 24px;"></i></div>
                         <div class="bonus-info">
                             <span class="bonus-title">Telegram Premium</span>
                             <span class="bonus-amount premium-text"><img src="../assets/tcoin.png" width="12"> +25.000</span>
@@ -80,13 +80,8 @@
                     </div>
                 </div>
                 <div class="friends-list-container">
-                    <div class="list-header"><h3>Lista de amigos (4/10.000)</h3></div>
-                    <div class="friend-item">
-                        <div class="friend-avatar">MD</div>
-                        <div class="friend-details"><span class="friend-name">Marisol Diaz</span><span class="friend-rank">3,84K</span></div>
-                        <div class="friend-reward">+5K</div>
+                    <div class="list-header"><h3>Lista de amigos (0/10.000)</h3></div>
                     </div>
-                </div>
                 <div class="invite-actions">
                     <button class="main-invite-btn">Invitar un amigo</button>
                     <button class="copy-link-btn"><i class="fas fa-copy"></i></button>
@@ -100,15 +95,15 @@
                     <div class="bonus-info"><span class="bonus-title">Ver Video</span><span class="bonus-amount">+1.500</span></div>
                 </div>
                 <div class="bonus-card" onclick="window.open('https://portaltecnohoy.blogspot.com')">
-                    <div class="bonus-icon"><i class="fas fa-globe" style="color:#5390d9;"></i></div>
+                    <div class="bonus-icon"><i class="fas fa-globe" style="color:#00f2ff;"></i></div>
                     <div class="bonus-info"><span class="bonus-title">Visitar Blog</span><span class="bonus-amount">+1.000</span></div>
                 </div>
             </section>
 
             <section id="accelerate-view" class="page-view">
                 <div class="top-balance-strip">
-                    <div class="mini-stat"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="12"> 0.0473</div>
-                    <div class="mini-stat"><img src="../assets/tcoin.png" width="12"> 1.206K</div>
+                    <div class="mini-stat"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="12"> <span id="accel-usdt">0.0000</span></div>
+                    <div class="mini-stat"><img src="../assets/tcoin.png" width="12"> <span id="accel-tcoin">0</span></div>
                 </div>
 
                 <div class="ship-display-container">
@@ -134,27 +129,27 @@
                 <div class="available-ships-section">
                     <h3>Mercado de Flota</h3>
                     <div class="ship-market-list">
-                        <div class="market-card">
+                        <div class="market-card" onclick="buyShip(1, 10)">
                             <img src="../assets/nave1.png" width="40">
                             <div class="market-details"><h4>Nave 1</h4><p>10 USDT</p></div>
                             <button class="upgrade-btn"><i class="fas fa-shopping-cart"></i></button>
                         </div>
-                        <div class="market-card">
+                        <div class="market-card" onclick="buyShip(2, 28)">
                             <img src="../assets/nave2.png" width="40">
                             <div class="market-details"><h4>Nave 2</h4><p>28 USDT</p></div>
                             <button class="upgrade-btn"><i class="fas fa-shopping-cart"></i></button>
                         </div>
-                        <div class="market-card">
+                        <div class="market-card" onclick="buyShip(3, 50)">
                             <img src="../assets/nave3.png" width="40">
                             <div class="market-details"><h4>Nave 3</h4><p>50 USDT</p></div>
                             <button class="upgrade-btn"><i class="fas fa-shopping-cart"></i></button>
                         </div>
-                        <div class="market-card">
+                        <div class="market-card" onclick="buyShip(4, 100)">
                             <img src="../assets/nave4.png" width="40">
                             <div class="market-details"><h4>Nave 4</h4><p>100 USDT</p></div>
                             <button class="upgrade-btn"><i class="fas fa-shopping-cart"></i></button>
                         </div>
-                        <div class="market-card">
+                        <div class="market-card" onclick="buyShip(5, 250)">
                             <img src="../assets/nave5.png" width="40">
                             <div class="market-details"><h4>Nave 5</h4><p>250 USDT</p></div>
                             <button class="upgrade-btn"><i class="fas fa-shopping-cart"></i></button>
@@ -166,7 +161,7 @@
             <section id="wallet-view" class="page-view">
                 <div class="wallet-header">
                     <p class="balance-label">Total Balance</p>
-                    <h1 class="total-usdt-balance">2.032576 <span class="currency">USDT</span></h1>
+                    <h1 class="total-usdt-balance">0.0000 <span class="currency">USDT</span></h1>
                     <div class="wallet-actions">
                         <button class="w-btn" onclick="recharge()"><i class="fas fa-plus-circle"></i> Recharge</button>
                         <button class="w-btn active" onclick="openSwap()"><i class="fas fa-sync-alt"></i> Swap</button>
@@ -176,10 +171,10 @@
                 <div class="assets-section">
                     <h3>My digital assets</h3>
                     <div class="asset-card">
-                        <div class="asset-info"><img src="../assets/tcoin.png" class="asset-icon"><div><span>T-Coin</span><p>1,206.37</p></div></div>
+                        <div class="asset-info"><img src="../assets/tcoin.png" class="asset-icon"><div><span>T-Coin</span><p id="asset-tcoin">0</p></div></div>
                     </div>
                     <div class="asset-card">
-                        <div class="asset-info"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="asset-icon"><div><span>USDT</span><p>0.0473</p></div></div>
+                        <div class="asset-info"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="asset-icon"><div><span>USDT</span><p id="asset-usdt">0.0000</p></div></div>
                     </div>
                 </div>
             </section>
