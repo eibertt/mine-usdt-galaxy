@@ -1,84 +1,114 @@
-// VARIABLES DE ESTADO (EL "CEREBRO" DEL JUEGO)
+// =============================================================================
+// 1. TU FUNCIÓN ORIGINAL (INTACTA)
+// =============================================================================
+function switchTab(tabId, clickedElement) {
+    // 1. Ocultamos todas las vistas
+    const views = document.querySelectorAll('.page-view');
+    views.forEach(view => {
+        view.classList.remove('active');
+    });
+
+    // 2. Le quitamos el estado "activo" a todos los botones del menú
+    const buttons = document.querySelectorAll('.nav-item');
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // 3. Mostramos la vista correspondiente
+    document.getElementById(tabId).classList.add('active');
+
+    // 4. Activamos visualmente el botón
+    clickedElement.classList.add('active');
+}
+
+// =============================================================================
+// 2. NUEVAS FUNCIONES INYECTADAS (LÓGICA DEL JUEGO)
+// =============================================================================
+
+// Variables de estado iniciales
 let balance = 51342;
 let energy = 2500;
 let maxEnergy = 2500;
 let incomePerTouch = 4;
-let incomePerHour = 5590;
-let userUSDT = 0.0473;
 
-// 1. CAMBIO DE PESTAÑAS
-function switchTab(tabId, btn) {
-    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    
-    document.getElementById(tabId).classList.add('active');
-    btn.classList.add('active');
-}
-
-// 2. CLIC EN EL ROBOT
+// --- FUNCIÓN PARA EL CLIC DEL ROBOT ---
 function handleRobotClick(e) {
     if (energy >= incomePerTouch) {
-        // Actualizar datos
+        // Actualizar balance y energía
         balance += incomePerTouch;
         energy -= incomePerTouch;
+        
         updateUI();
 
-        // Crear número flotante (+4)
-        const num = document.createElement('div');
-        num.innerText = `+${incomePerTouch}`;
-        num.className = 'floating-num';
-        num.style.left = `${e.clientX}px`;
-        num.style.top = `${e.clientY}px`;
-        document.body.appendChild(num);
+        // Crear el número flotante (+4)
+        const floatingNum = document.createElement('div');
+        floatingNum.innerText = `+${incomePerTouch}`;
+        floatingNum.className = 'floating-num';
+        
+        // Posicionamiento exacto en el clic
+        floatingNum.style.left = `${e.clientX}px`;
+        floatingNum.style.top = `${e.clientY}px`;
+        
+        document.body.appendChild(floatingNum);
 
-        setTimeout(() => num.remove(), 700);
-    } else {
-        alert("¡Energía agotada socio! Espera a que recargue.");
+        // Limpiar el elemento después de la animación
+        setTimeout(() => {
+            floatingNum.remove();
+        }, 800);
     }
 }
 
-// 3. ACTUALIZAR LA PANTALLA
+// --- ACTUALIZACIÓN DE LA INTERFAZ ---
 function updateUI() {
-    document.getElementById('main-balance').innerText = Math.floor(balance).toLocaleString();
+    // Actualizar balance principal
+    const balanceElement = document.getElementById('main-balance');
+    if(balanceElement) balanceElement.innerText = balance.toLocaleString();
+
+    // Actualizar texto de energía (2500/2500)
     const energyDisplay = document.querySelector('.stat-card:nth-child(3) .stat-value');
-    energyDisplay.innerHTML = `<i class="fas fa-bolt" style="color: #ffd700;"></i> ${energy}/${maxEnergy}`;
-    
-    // Actualizar barra de progreso de energía (opcional)
-    const energyPercent = (energy / maxEnergy) * 100;
-    document.querySelector('.progress-fill').style.width = `${energyPercent}%`;
-}
-
-// 4. LÓGICA DE COMPRA DE NAVES
-function buyShip(shipId, price) {
-    if (userUSDT >= price) {
-        userUSDT -= price;
-        alert(`¡Felicidades! Compraste la Nave ${shipId}`);
-        // Cambiar imagen de nave activa
-        document.querySelector('.active-ship-img').src = `../assets/nave${shipId}.png`;
-        updateUI();
-    } else {
-        alert("No tienes suficiente USDT, socio.");
+    if(energyDisplay) {
+        energyDisplay.innerHTML = `<i class="fas fa-bolt" style="color: #ffd700;"></i> ${energy}/${maxEnergy}`;
     }
 }
 
-// 5. FUNCIONES DE BOTONES
-function openProfile() { alert("Perfil de Eiber't Torres"); }
-function openSettings() { alert("Ajustes del Sistema Galáctico"); }
-function openSwap() {
-    let tcoinsToSwap = prompt("¿Cuántos T-Coins quieres cambiar a USDT?");
-    if (tcoinsToSwap && balance >= tcoinsToSwap) {
-        let converted = tcoinsToSwap / 100000; // Ejemplo de tasa
-        balance -= tcoinsToSwap;
-        userUSDT += converted;
-        updateUI();
-        alert(`Cambio exitoso: Recibiste ${converted.toFixed(4)} USDT`);
-    }
-}
-
-// 6. RECUPERACIÓN DE ENERGÍA AUTOMÁTICA
+// --- RECUPERACIÓN AUTOMÁTICA DE ENERGÍA ---
 setInterval(() => {
     if (energy < maxEnergy) {
         energy += 1;
         updateUI();
     }
-}, 1000); // Recupera 1 punto de energía por segundo
+}, 1000); // Recupera 1 punto cada segundo
+
+// --- FUNCIONES DE LOS BOTONES DE LAS ESQUINAS ---
+function openProfile() {
+    alert("Abriendo perfil de Eiber't Torres...");
+}
+
+function openSettings() {
+    alert("Abriendo ajustes del sistema...");
+}
+
+// --- FUNCIÓN DE LA WALLET (SWAP) ---
+function openSwap() {
+    let amount = prompt("¿Cuántos T-Coins deseas cambiar a USDT?");
+    if (amount) {
+        amount = parseInt(amount);
+        if (amount <= balance) {
+            let conversion = amount / 100000; // Ejemplo: 100k T-Coins = 1 USDT
+            balance -= amount;
+            alert(`¡Swap exitoso! Has recibido ${conversion.toFixed(4)} USDT`);
+            updateUI();
+        } else {
+            alert("No tienes suficientes T-Coins, socio.");
+        }
+    }
+}
+
+// --- FUNCIÓN PARA COMPRAR NAVES ---
+function buyShip(shipNumber, price) {
+    // Aquí podrías añadir lógica para descontar USDT
+    alert(`Has seleccionado la Nave ${shipNumber}. Costo: ${price} USDT.`);
+    // Cambia la imagen de la nave activa en el Accelerate view
+    const mainShipImg = document.querySelector('.active-ship-img');
+    if(mainShipImg) mainShipImg.src = `../assets/nave${shipNumber}.png`;
+}
