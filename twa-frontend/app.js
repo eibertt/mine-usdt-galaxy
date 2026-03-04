@@ -1,59 +1,84 @@
-// Función intacta para cambiar entre pestañas sin recargar la página
-function switchTab(tabId, clickedElement) {
-    // 1. Ocultamos todas las vistas
-    const views = document.querySelectorAll('.page-view');
-    views.forEach(view => {
-        view.classList.remove('active');
-    });
+// VARIABLES DE ESTADO (EL "CEREBRO" DEL JUEGO)
+let balance = 51342;
+let energy = 2500;
+let maxEnergy = 2500;
+let incomePerTouch = 4;
+let incomePerHour = 5590;
+let userUSDT = 0.0473;
 
-    // 2. Le quitamos el estado "activo" a todos los botones del menú
-    const buttons = document.querySelectorAll('.nav-item');
-    buttons.forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    // 3. Mostramos la vista correspondiente
+// 1. CAMBIO DE PESTAÑAS
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    
     document.getElementById(tabId).classList.add('active');
-
-    // 4. Activamos visualmente el botón
-    clickedElement.classList.add('active');
-}
-     // Función para el robot
-function handleRobotClick(event) {
-    const robot = event.target;
-    
-    // 1. Lógica de balance (asumiendo que tienes variables para esto)
-    // balance += 4;
-    // updateUI();
-
-    // 2. Crear número flotante
-    const floatingNum = document.createElement('div');
-    floatingNum.innerHTML = '+4';
-    floatingNum.className = 'floating-number';
-    
-    // Posicionar donde se hizo el clic
-    floatingNum.style.left = `${event.clientX}px`;
-    floatingNum.style.top = `${event.clientY}px`;
-    
-    document.body.appendChild(floatingNum);
-    
-    // Eliminar después de la animación
-    setTimeout(() => {
-        floatingNum.remove();
-    }, 800);
+    btn.classList.add('active');
 }
 
-// Funciones para botones de cabecera
-function openProfile() {
-    alert("Abriendo perfil de Eiber't Torres...");
+// 2. CLIC EN EL ROBOT
+function handleRobotClick(e) {
+    if (energy >= incomePerTouch) {
+        // Actualizar datos
+        balance += incomePerTouch;
+        energy -= incomePerTouch;
+        updateUI();
+
+        // Crear número flotante (+4)
+        const num = document.createElement('div');
+        num.innerText = `+${incomePerTouch}`;
+        num.className = 'floating-num';
+        num.style.left = `${e.clientX}px`;
+        num.style.top = `${e.clientY}px`;
+        document.body.appendChild(num);
+
+        setTimeout(() => num.remove(), 700);
+    } else {
+        alert("¡Energía agotada socio! Espera a que recargue.");
+    }
 }
 
-function openSettings() {
-    alert("Configuraciones del juego...");
+// 3. ACTUALIZAR LA PANTALLA
+function updateUI() {
+    document.getElementById('main-balance').innerText = Math.floor(balance).toLocaleString();
+    const energyDisplay = document.querySelector('.stat-card:nth-child(3) .stat-value');
+    energyDisplay.innerHTML = `<i class="fas fa-bolt" style="color: #ffd700;"></i> ${energy}/${maxEnergy}`;
+    
+    // Actualizar barra de progreso de energía (opcional)
+    const energyPercent = (energy / maxEnergy) * 100;
+    document.querySelector('.progress-fill').style.width = `${energyPercent}%`;
 }
 
-// Función para comprar naves
+// 4. LÓGICA DE COMPRA DE NAVES
 function buyShip(shipId, price) {
-    console.log(`Intentando comprar nave ${shipId} por ${price} USDT`);
-    // Aquí iría la lógica de verificar saldo y actualizar la nave principal
+    if (userUSDT >= price) {
+        userUSDT -= price;
+        alert(`¡Felicidades! Compraste la Nave ${shipId}`);
+        // Cambiar imagen de nave activa
+        document.querySelector('.active-ship-img').src = `../assets/nave${shipId}.png`;
+        updateUI();
+    } else {
+        alert("No tienes suficiente USDT, socio.");
+    }
 }
+
+// 5. FUNCIONES DE BOTONES
+function openProfile() { alert("Perfil de Eiber't Torres"); }
+function openSettings() { alert("Ajustes del Sistema Galáctico"); }
+function openSwap() {
+    let tcoinsToSwap = prompt("¿Cuántos T-Coins quieres cambiar a USDT?");
+    if (tcoinsToSwap && balance >= tcoinsToSwap) {
+        let converted = tcoinsToSwap / 100000; // Ejemplo de tasa
+        balance -= tcoinsToSwap;
+        userUSDT += converted;
+        updateUI();
+        alert(`Cambio exitoso: Recibiste ${converted.toFixed(4)} USDT`);
+    }
+}
+
+// 6. RECUPERACIÓN DE ENERGÍA AUTOMÁTICA
+setInterval(() => {
+    if (energy < maxEnergy) {
+        energy += 1;
+        updateUI();
+    }
+}, 1000); // Recupera 1 punto de energía por segundo
