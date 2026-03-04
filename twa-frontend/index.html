@@ -13,67 +13,205 @@
         <main id="content-area">
             
             <section id="home-view" class="page-view active">
-                <div class="header">
-                    <h2>Imperial Dorada</h2>
-                    <p class="subtitle">5,000 T-Coin / h</p>
-                    <span class="badge">100 USDT</span>
+                <div class="home-header">
+                    <div class="user-info">
+                        <div class="user-avatar"><i class="fas fa-user"></i></div>
+                        <span>Eiber't Torres</span>
+                    </div>
+                    <div class="settings-icon"><i class="fas fa-cog"></i></div>
                 </div>
-                <div class="main-mining-area">
-                    <img src="../assets/robot2.png" alt="Robot Minero" style="max-width: 200px;">
-                    <h3>Bóveda Actual</h3>
-                    <p>T-Coins: 0</p>
-                    <p>USDT: 0.00</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-title">Ingresos por toque</span>
+                        <div class="stat-value"><img src="../assets/tcoin.png" width="12"> +4</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Ingresos por hora</span>
+                        <div class="stat-value"><img src="../assets/tcoin.png" width="12"> +5,59K</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-title">Energía</span>
+                        <div class="stat-value"><i class="fas fa-bolt" style="color: #ffd700;"></i> 2500/2500</div>
+                    </div>
+                </div>
+
+                <div class="balance-container">
+                    <img src="../assets/tcoin.png" alt="T-Coin" class="main-coin-icon">
+                    <h1 id="main-balance">51.342</h1>
+                </div>
+
+                <div class="rank-container">
+                    <div class="rank-info">
+                        <span>Rango 4/15</span>
+                        <span><img src="../assets/tcoin.png" width="10"> 5.000.000 ></span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 35%;"></div></div>
+                </div>
+
+                <div class="robot-clicker-area">
+                    <div class="robot-aura"></div>
+                    <img src="../assets/robot2.png" alt="Robot" id="robot-tap" class="robot-image">
+                    
+                    <div class="floating-btn left"><i class="fas fa-trophy"></i><span>Arena</span></div>
+                    <div class="floating-btn right"><i class="fas fa-gift"></i><span>Promo</span></div>
                 </div>
             </section>
 
             <section id="group-view" class="page-view">
-                <h2>Group</h2>
-                <div class="card">
-                    <h3><i class="fas fa-bullhorn"></i> Invitar Amigos</h3>
-                    <p>Gana 2,500 T-Coins por referido</p>
+                <div class="ref-header">
+                    <h1>Invitar amigos</h1>
+                    <p>Tú y tu amigo recibirán bonos</p>
+                </div>
+
+                <div class="bonus-container">
+                    <div class="bonus-card">
+                        <div class="bonus-icon"><i class="fas fa-gift" style="color:#ffd700; font-size: 24px;"></i></div>
+                        <div class="bonus-info">
+                            <span class="bonus-title">Invitar un amigo</span>
+                            <span class="bonus-amount"><img src="../assets/tcoin.png" width="12"> +5.000 <small>para ti y tu amigo</small></span>
+                        </div>
+                    </div>
+                    <div class="bonus-card premium">
+                        <div class="bonus-icon"><i class="fas fa-gem" style="color:#5390d9; font-size: 24px;"></i></div>
+                        <div class="bonus-info">
+                            <span class="bonus-title">Invitar con Telegram Premium</span>
+                            <span class="bonus-amount premium-text"><img src="../assets/tcoin.png" width="12"> +25.000 <small>para ti y tu amigo</small></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="friends-list-container">
+                    <div class="list-header">
+                        <h3>Lista de amigos (4/10.000)</h3>
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="friends-scroll">
+                        <div class="friend-item">
+                            <div class="friend-avatar">MD</div>
+                            <div class="friend-details">
+                                <span class="friend-name">Marisol Diaz Da Silva</span>
+                                <span class="friend-rank"><img src="../assets/tcoin.png" width="10"> 3,84K</span>
+                            </div>
+                            <div class="friend-reward">+5K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invite-actions">
+                    <button class="main-invite-btn"><i class="fas fa-user-plus"></i> Invitar un amigo</button>
+                    <button class="copy-link-btn"><i class="fas fa-copy"></i></button>
                 </div>
             </section>
 
             <section id="earnings-view" class="page-view">
-                <h2>Earnings</h2>
-                <div class="card">
-                    <h3><i class="fas fa-globe"></i> Portal TecnoHoy</h3>
-                    <p>Gana 1,000 T-Coins por visita</p>
+                <div class="ref-header">
+                    <h1>Misiones</h1>
+                    <p>Completa tareas para ganar T-Coins</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fab fa-youtube" style="color:#ff0000; font-size: 24px;"></i></div>
+                    <div class="bonus-info">
+                        <span class="bonus-title">Ver video tutorial</span>
+                        <span class="bonus-amount"><img src="../assets/tcoin.png" width="12"> +1.500</span>
+                    </div>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-globe" style="color:#5390d9; font-size: 24px;"></i></div>
+                    <div class="bonus-info">
+                        <span class="bonus-title">Visitar Portal TecnoHoy</span>
+                        <span class="bonus-amount"><img src="../assets/tcoin.png" width="12"> +1.000</span>
+                    </div>
                 </div>
             </section>
 
             <section id="accelerate-view" class="page-view">
-                <h2>Accelerate (Naves)</h2>
-                <p>Aquí irá el listado de naves para comprar y aumentar el minado.</p>
+                <div class="top-balance-strip">
+                    <div class="mini-stat"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="12"> 0.0473</div>
+                    <div class="mini-stat"><img src="../assets/tcoin.png" width="12"> 1.206K</div>
+                </div>
+
+                <div class="ship-display-container">
+                    <div class="ship-stats-left">
+                        <div class="ship-stat-item"><i class="fas fa-history"></i><span>Validez</span><p>30 días</p></div>
+                        <div class="ship-stat-item"><i class="fas fa-coins"></i><span>Precio</span><p>10 USDT</p></div>
+                    </div>
+                    <div class="main-ship-view">
+                        <div class="ship-glow"></div>
+                        <img src="../assets/nave1.png" alt="Nave Activa" class="active-ship-img">
+                        <h2 class="ship-title">Imperial Dorada</h2>
+                    </div>
+                    <div class="ship-stats-right">
+                        <div class="ship-stat-item"><i class="fas fa-bolt"></i><span>Prod. Diaria</span><p>66667 T-C</p></div>
+                        <div class="ship-stat-item"><i class="fas fa-rocket"></i><span>Extra</span><p>0.5 USDT</p></div>
+                    </div>
+                </div>
+
+                <div class="buy-action-container">
+                    <button class="buy-fast-btn">Buy fast <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <div class="available-ships-section">
+                    <h3>Limited-Time Offer</h3>
+                    <div class="market-card">
+                        <div class="market-ship-img"><img src="../assets/nave2.png" alt="Nave 2"></div>
+                        <div class="market-details">
+                            <h4>Titán Galáctico</h4>
+                            <p>Prod: 3.36M / Mes</p>
+                            <div class="price-tag"><span class="old-price">60 USDT</span><span class="new-price">28 USDT</span></div>
+                        </div>
+                        <button class="upgrade-btn"><i class="fas fa-arrow-up"></i></button>
+                    </div>
+                </div>
             </section>
 
             <section id="wallet-view" class="page-view">
-                <h2>Wallet</h2>
-                <button class="action-btn">CAMBIAR A USDT</button>
+                <div class="wallet-header">
+                    <p class="balance-label">Total Balance</p>
+                    <h1 class="total-usdt-balance">2.032576 <span class="currency">USDT</span></h1>
+                    <div class="wallet-actions">
+                        <button class="w-btn"><i class="fas fa-plus-circle"></i> Recharge</button>
+                        <button class="w-btn active"><i class="fas fa-sync-alt"></i> Swap</button>
+                        <button class="w-btn"><i class="fas fa-arrow-up"></i> Withdraw</button>
+                    </div>
+                </div>
+
+                <div class="assets-section">
+                    <h3>My digital assets</h3>
+                    <div class="asset-card">
+                        <div class="asset-info">
+                            <img src="../assets/tcoin.png" class="asset-icon">
+                            <div><span class="asset-name">T-Coin</span><span class="asset-amount">1,206.37</span></div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="asset-card">
+                        <div class="asset-info">
+                            <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="asset-icon">
+                            <div><span class="asset-name">USDT</span><span class="asset-amount">0.047305</span></div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
             </section>
 
         </main>
 
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="switchTab('home-view', this)">
-                <div class="icon-wrapper"><i class="fas fa-home"></i></div>
-                <span>Home</span>
+                <div class="icon-wrapper"><i class="fas fa-home"></i></div><span>Home</span>
             </button>
             <button class="nav-item" onclick="switchTab('group-view', this)">
-                <div class="icon-wrapper"><i class="fas fa-user-friends"></i></div>
-                <span>Group</span>
+                <div class="icon-wrapper"><i class="fas fa-user-friends"></i></div><span>Group</span>
             </button>
             <button class="nav-item center-btn" onclick="switchTab('earnings-view', this)">
-                <div class="icon-wrapper"><i class="fas fa-space-shuttle"></i></div>
-                <span>Earnings</span>
+                <div class="icon-wrapper"><i class="fas fa-bullseye"></i></div><span>Earnings</span>
             </button>
             <button class="nav-item" onclick="switchTab('accelerate-view', this)">
-                <div class="icon-wrapper"><i class="fas fa-rocket"></i></div>
-                <span>Accelerate</span>
+                <div class="icon-wrapper"><i class="fas fa-rocket"></i></div><span>Accelerate</span>
             </button>
             <button class="nav-item" onclick="switchTab('wallet-view', this)">
-                <div class="icon-wrapper"><i class="fas fa-wallet"></i></div>
-                <span>Wallet</span>
+                <div class="icon-wrapper"><i class="fas fa-wallet"></i></div><span>Wallet</span>
             </button>
         </nav>
 
