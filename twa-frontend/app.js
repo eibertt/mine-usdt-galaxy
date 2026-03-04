@@ -1,73 +1,90 @@
 // =============================================================================
-// 1. TU FUNCIÓN ORIGINAL (INTACTA)
+// 1. FUNCIÓN DE PESTAÑAS ORIGINAL
 // =============================================================================
 function switchTab(tabId, clickedElement) {
-    // 1. Ocultamos todas las vistas
     const views = document.querySelectorAll('.page-view');
     views.forEach(view => {
         view.classList.remove('active');
     });
 
-    // 2. Le quitamos el estado "activo" a todos los botones del menú
     const buttons = document.querySelectorAll('.nav-item');
     buttons.forEach(btn => {
         btn.classList.remove('active');
     });
 
-    // 3. Mostramos la vista correspondiente
     document.getElementById(tabId).classList.add('active');
-
-    // 4. Activamos visualmente el botón
     clickedElement.classList.add('active');
 }
 
 // =============================================================================
-// 2. NUEVAS FUNCIONES INYECTADAS (LÓGICA DEL JUEGO)
+// 2. LÓGICA DEL JUEGO Y MEMORIA LOCAL (ARRANCA EN CERO)
 // =============================================================================
 
-// Variables de estado iniciales
-let balance = 51342;
-let energy = 2500;
+// Cargamos de la memoria o iniciamos en 0
+let balance = parseFloat(localStorage.getItem('tcoin_balance')) || 0;
+let usdtBalance = parseFloat(localStorage.getItem('usdt_balance')) || 0.0000;
+let energy = parseInt(localStorage.getItem('user_energy')) || 2500;
 let maxEnergy = 2500;
 let incomePerTouch = 4;
+
+// Al cargar la página, se muestran los datos guardados
+window.onload = () => {
+    updateUI();
+};
 
 // --- FUNCIÓN PARA EL CLIC DEL ROBOT ---
 function handleRobotClick(e) {
     if (energy >= incomePerTouch) {
-        // Actualizar balance y energía
         balance += incomePerTouch;
         energy -= incomePerTouch;
         
         updateUI();
 
-        // Crear el número flotante (+4)
+        // Número flotante
         const floatingNum = document.createElement('div');
         floatingNum.innerText = `+${incomePerTouch}`;
         floatingNum.className = 'floating-num';
-        
-        // Posicionamiento exacto en el clic
         floatingNum.style.left = `${e.clientX}px`;
         floatingNum.style.top = `${e.clientY}px`;
         
         document.body.appendChild(floatingNum);
-
-        // Limpiar el elemento después de la animación
-        setTimeout(() => {
-            floatingNum.remove();
-        }, 800);
+        setTimeout(() => floatingNum.remove(), 800);
+    } else {
+        // Opcional: vibrar o avisar que no hay energía
+        console.log("Sin energía suficiente");
     }
 }
 
-// --- ACTUALIZACIÓN DE LA INTERFAZ ---
+// --- ACTUALIZACIÓN DE LA INTERFAZ Y GUARDADO AUTOMÁTICO ---
 function updateUI() {
-    // Actualizar balance principal
-    const balanceElement = document.getElementById('main-balance');
-    if(balanceElement) balanceElement.innerText = balance.toLocaleString();
+    // 1. Guardar en la memoria del teléfono
+    localStorage.setItem('tcoin_balance', balance);
+    localStorage.setItem('usdt_balance', usdtBalance);
+    localStorage.setItem('user_energy', energy);
 
-    // Actualizar texto de energía (2500/2500)
-    const energyDisplay = document.querySelector('.stat-card:nth-child(3) .stat-value');
+    // 2. Actualizar balance principal T-Coin
+    const balanceElement = document.getElementById('main-balance');
+    if(balanceElement) balanceElement.innerText = balance.toLocaleString('es-ES');
+
+    // 3. Actualizar balances T-Coin en otras vistas (Wallet y Accelerate)
+    const assetTcoin = document.getElementById('asset-tcoin');
+    const accelTcoin = document.getElementById('accel-tcoin');
+    if(assetTcoin) assetTcoin.innerText = balance.toLocaleString('es-ES');
+    if(accelTcoin) accelTcoin.innerText = balance.toLocaleString('es-ES');
+
+    // 4. Actualizar balances USDT en todas partes
+    const walletUsdt = document.querySelector('.total-usdt-balance');
+    const assetUsdt = document.getElementById('asset-usdt');
+    const accelUsdt = document.getElementById('accel-usdt');
+    
+    if(walletUsdt) walletUsdt.innerHTML = `${usdtBalance.toFixed(4)} <span class="currency">USDT</span>`;
+    if(assetUsdt) assetUsdt.innerText = usdtBalance.toFixed(4);
+    if(accelUsdt) accelUsdt.innerText = usdtBalance.toFixed(4);
+
+    // 5. Actualizar texto de energía
+    const energyDisplay = document.getElementById('energy-text');
     if(energyDisplay) {
-        energyDisplay.innerHTML = `<i class="fas fa-bolt" style="color: #ffd700;"></i> ${energy}/${maxEnergy}`;
+        energyDisplay.innerText = `${energy}/${maxEnergy}`;
     }
 }
 
@@ -75,40 +92,63 @@ function updateUI() {
 setInterval(() => {
     if (energy < maxEnergy) {
         energy += 1;
-        updateUI();
+        updateUI(); // Esto actualizará la barra visualmente y guardará
     }
-}, 1000); // Recupera 1 punto cada segundo
+}, 1000); // 1 punto por segundo
 
-// --- FUNCIONES DE LOS BOTONES DE LAS ESQUINAS ---
+// --- FUNCIONES EXTRA ---
 function openProfile() {
-    alert("Abriendo perfil de Eiber't Torres...");
+    alert("Abriendo perfil...");
 }
 
 function openSettings() {
-    alert("Abriendo ajustes del sistema...");
+    alert("Abriendo ajustes...");
 }
 
-// --- FUNCIÓN DE LA WALLET (SWAP) ---
 function openSwap() {
-    let amount = prompt("¿Cuántos T-Coins deseas cambiar a USDT?");
+    let amount = prompt(`Tienes ${balance} T-Coins.\n¿Cuántos deseas cambiar a USDT? (100,000 T-Coins = 1 USDT)`);
     if (amount) {
         amount = parseInt(amount);
-        if (amount <= balance) {
-            let conversion = amount / 100000; // Ejemplo: 100k T-Coins = 1 USDT
+        if (amount > 0 && amount <= balance) {
+            let conversion = amount / 100000; 
             balance -= amount;
+            usdtBalance += conversion;
             alert(`¡Swap exitoso! Has recibido ${conversion.toFixed(4)} USDT`);
             updateUI();
         } else {
-            alert("No tienes suficientes T-Coins, socio.");
+            alert("Cantidad inválida o no tienes suficientes T-Coins.");
         }
     }
 }
 
-// --- FUNCIÓN PARA COMPRAR NAVES ---
+function recharge() {
+    alert("Función de depósito en mantenimiento.");
+}
+
+function withdraw() {
+    if (usdtBalance > 0) {
+        alert("Retirando " + usdtBalance.toFixed(4) + " USDT a tu billetera...");
+    } else {
+        alert("No tienes USDT para retirar.");
+    }
+}
+
+// --- COMPRA DE NAVES ---
 function buyShip(shipNumber, price) {
-    // Aquí podrías añadir lógica para descontar USDT
-    alert(`Has seleccionado la Nave ${shipNumber}. Costo: ${price} USDT.`);
-    // Cambia la imagen de la nave activa en el Accelerate view
-    const mainShipImg = document.querySelector('.active-ship-img');
-    if(mainShipImg) mainShipImg.src = `../assets/nave${shipNumber}.png`;
+    if (usdtBalance >= price) {
+        usdtBalance -= price;
+        alert(`¡Nave ${shipNumber} comprada con éxito por ${price} USDT!`);
+        
+        // Cambiar la imagen de la nave principal
+        const mainShipImg = document.querySelector('.active-ship-img');
+        if(mainShipImg) mainShipImg.src = `../assets/nave${shipNumber}.png`;
+        
+        updateUI();
+    } else {
+        alert(`Saldo insuficiente. Necesitas ${price} USDT para esta nave.`);
+    }
+}
+
+function processBuy() {
+    alert("Función de compra rápida activada.");
 }
