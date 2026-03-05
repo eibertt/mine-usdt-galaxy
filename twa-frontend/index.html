@@ -6,8 +6,9 @@
     <title>Game Galaxia USDT</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        /* Estilos base en línea para los nuevos elementos (Mover a style.css luego) */
+        /* Estilos base en línea para los nuevos elementos */
         #welcome-bot {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 15, 30, 0.95); z-index: 9999;
@@ -18,15 +19,6 @@
             font-size: 11px; color: #a0a0a0; margin-top: 5px;
             background: rgba(0, 0, 0, 0.2); padding: 2px 6px; border-radius: 4px; display: inline-block;
         }
-        .carousel-container {
-            display: flex; align-items: center; justify-content: space-between; width: 100%;
-        }
-        .nav-ship-btn {
-            background: none; border: none; color: #00f2ff; font-size: 24px; cursor: pointer; padding: 10px;
-        }
-        .ship-desc {
-            font-size: 13px; color: #ccc; margin-top: 10px; max-width: 80%; margin-left: auto; margin-right: auto;
-        }
     </style>
 </head>
 <body>
@@ -34,7 +26,7 @@
     <div id="welcome-bot">
         <i class="fas fa-robot" style="font-size: 60px; margin-bottom: 20px; animation: pulse 2s infinite;"></i>
         <h2>[ SISTEMA EN LÍNEA ]</h2>
-        <p>Bienvenido piloto.<br>Los recursos de la Galaxia USDT te esperan.</p>
+        <p>Bienvenido piloto.<br>Los recursos de la Galaxia te esperan.</p>
         <button onclick="document.getElementById('welcome-bot').style.display='none'" style="margin-top:30px; padding: 12px 25px; background: transparent; color: #00f2ff; border: 2px solid #00f2ff; border-radius: 8px; cursor: pointer; font-family: monospace; font-weight: bold;">[ INICIAR MINERÍA ]</button>
     </div>
 
@@ -46,8 +38,9 @@
                 <div class="home-header">
                     <div class="user-info" onclick="openProfile()">
                         <div class="user-avatar"><i class="fas fa-user"></i></div>
-                        <span>Eiber't Torres</span>
+                        <span id="display-username">Piloto Galáctico</span>
                     </div>
+                    <div id="ton-connect" style="margin-right: 10px;"></div>
                     <div class="settings-icon" onclick="openSettings()"><i class="fas fa-cog"></i></div>
                 </div>
 
@@ -60,7 +53,7 @@
                         <span class="stat-title">Ingresos por hora</span>
                         <div class="stat-value"><img src="../assets/tcoin.png" width="12"> +0</div>
                         <div class="xp-container">
-                            <i class="fas fa-star" style="color: gold;"></i> XP: 0 / 1000
+                            <i class="fas fa-star" style="color: gold;"></i> XP: <span id="xp-text">0</span>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -76,18 +69,18 @@
 
                 <div class="rank-container">
                     <div class="rank-info">
-                        <span>Rango 1/15</span>
-                        <span><img src="../assets/tcoin.png" width="10"> 5.000.000 ></span>
+                        <span>Rango Inicial</span>
+                        <span><img src="../assets/tcoin.png" width="10"> <span id="rank-max">5000</span> ></span>
                     </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 5%;"></div></div>
+                    <div class="progress-bar"><div class="progress-fill" id="xp-progress" style="width: 0%;"></div></div>
                 </div>
 
                 <div class="robot-clicker-area">
                     <div class="robot-aura"></div>
                     <img src="../assets/robot1.png" alt="Robot" id="robot-tap" class="robot-image" data-current="1" data-max="5" onclick="handleRobotClick(event)">
                     
-                    <div class="floating-btn left"><i class="fas fa-trophy"></i><span>Arena</span></div>
-                    <div class="floating-btn right"><i class="fas fa-gift"></i><span>Promo</span></div>
+                    <div class="floating-btn left" onclick="openRuleta()"><i class="fas fa-dharmachakra"></i><span>Ruleta</span></div>
+                    <div class="floating-btn right" onclick="openAutoMiner()"><i class="fas fa-robot"></i><span>Auto-Miner</span></div>
                 </div>
             </section>
 
@@ -134,66 +127,58 @@
             </section>
 
             <section id="accelerate-view" class="page-view">
-                <div class="top-balance-strip">
-                    <div class="mini-stat"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" width="12"> <span id="accel-usdt">0.0000</span></div>
-                    <div class="mini-stat"><img src="../assets/tcoin.png" width="12"> <span id="accel-tcoin">0</span></div>
+                <div class="ref-header">
+                    <h1>Mercado de Flota</h1>
+                    <p>Aumenta tu producción diaria</p>
                 </div>
 
-                <div class="ship-display-container">
-                    <div class="carousel-container">
-                        <button class="nav-ship-btn" onclick="prevShip()"><i class="fas fa-chevron-left"></i></button>
-                        
-                        <div class="main-ship-view">
-                            <div class="ship-glow"></div>
-                            <img src="../assets/nave1.png" alt="Nave Actual" class="active-ship-img" id="viewer-ship-img">
-                            <h2 class="ship-title" id="viewer-ship-title">Imperial Dorada</h2>
-                            <p class="ship-desc" id="viewer-ship-desc">Nave de minería inicial. Perfecta para arrancar tu imperio galáctico con rendimiento estable.</p>
+                <div class="hightech-market">
+                    <div class="hightech-card">
+                        <div class="ht-glow"></div>
+                        <div class="ht-header">
+                            <img src="../assets/nave1.png" alt="Nave 1" class="ht-img">
+                            <div class="ht-title-box">
+                                <h3>Nave Exploradora</h3>
+                                <span class="ht-badge">Válido 30 Días</span>
+                            </div>
                         </div>
-
-                        <button class="nav-ship-btn" onclick="nextShip()"><i class="fas fa-chevron-right"></i></button>
+                        <div class="ht-stats">
+                            <div class="ht-stat-col"><span>Prod. Diaria</span><p>140k T-Coin</p></div>
+                            <div class="ht-stat-col"><span>Costo</span><p style="color:#0088ff;">2 TON</p></div>
+                        </div>
+                        <button class="buy-fast-btn w-100" onclick="buyShip(1, 2)">COMPRAR RÁPIDO <i class="fas fa-bolt"></i></button>
                     </div>
 
-                    <div class="ship-stats-panel" style="display: flex; justify-content: space-around; width: 100%; margin-top: 15px;">
-                        <div class="ship-stats-left">
-                            <div class="ship-stat-item"><i class="fas fa-history"></i><span>Días</span><p id="viewer-ship-days">30</p></div>
-                            <div class="ship-stat-item"><i class="fas fa-coins"></i><span>Coste</span><p id="viewer-ship-price">10 USDT</p></div>
+                    <div class="hightech-card">
+                        <div class="ht-glow"></div>
+                        <div class="ht-header">
+                            <img src="../assets/nave2.png" alt="Nave 2" class="ht-img">
+                            <div class="ht-title-box">
+                                <h3>Crucero de Batalla</h3>
+                                <span class="ht-badge">Válido 30 Días</span>
+                            </div>
                         </div>
-                        <div class="ship-stats-right">
-                            <div class="ship-stat-item"><i class="fas fa-bolt"></i><span>Prod.</span><p id="viewer-ship-prod">66k T-C</p></div>
-                            <div class="ship-stat-item"><i class="fas fa-rocket"></i><span>Extra</span><p id="viewer-ship-extra">0.5 U</p></div>
+                        <div class="ht-stats">
+                            <div class="ht-stat-col"><span>Prod. Diaria</span><p>300k T-Coin</p></div>
+                            <div class="ht-stat-col"><span>Costo</span><p style="color:#0088ff;">5 TON</p></div>
                         </div>
+                        <button class="buy-fast-btn w-100" onclick="buyShip(2, 5)">COMPRAR RÁPIDO <i class="fas fa-bolt"></i></button>
                     </div>
-                </div>
 
-                <div class="buy-action-container">
-                    <button class="buy-fast-btn" onclick="buyWithAdminWallet('0xTuBilleteraAdminUSDT_Aqui')">
-                        Comprar Nave <i class="fas fa-wallet"></i>
-                    </button>
-                </div>
-
-                <div class="available-ships-section">
-                    <h3>Mercado de Flota (Vista rápida)</h3>
-                    <div class="ship-market-list">
-                        <div class="market-card" onclick="selectShip(1, 'Nave 1', 10)">
-                            <img src="../assets/nave1.png" width="40">
-                            <div class="market-details"><h4>Nave 1</h4><p>10 USDT</p></div>
+                    <div class="hightech-card">
+                        <div class="ht-glow"></div>
+                        <div class="ht-header">
+                            <img src="../assets/nave3.png" alt="Nave 3" class="ht-img">
+                            <div class="ht-title-box">
+                                <h3>Destructor Estelar</h3>
+                                <span class="ht-badge">Válido 30 Días</span>
+                            </div>
                         </div>
-                        <div class="market-card" onclick="selectShip(2, 'Nave 2', 28)">
-                            <img src="../assets/nave2.png" width="40">
-                            <div class="market-details"><h4>Nave 2</h4><p>28 USDT</p></div>
+                        <div class="ht-stats">
+                            <div class="ht-stat-col"><span>Prod. Diaria</span><p>850k T-Coin</p></div>
+                            <div class="ht-stat-col"><span>Costo</span><p style="color:#0088ff;">12 TON</p></div>
                         </div>
-                        <div class="market-card" onclick="selectShip(3, 'Nave 3', 50)">
-                            <img src="../assets/nave3.png" width="40">
-                            <div class="market-details"><h4>Nave 3</h4><p>50 USDT</p></div>
-                        </div>
-                        <div class="market-card" onclick="selectShip(4, 'Nave 4', 100)">
-                            <img src="../assets/nave4.png" width="40">
-                            <div class="market-details"><h4>Nave 4</h4><p>100 USDT</p></div>
-                        </div>
-                        <div class="market-card" onclick="selectShip(5, 'Nave 5', 250)">
-                            <img src="../assets/nave5.png" width="40">
-                            <div class="market-details"><h4>Nave 5</h4><p>250 USDT</p></div>
-                        </div>
+                        <button class="buy-fast-btn w-100" onclick="buyShip(3, 12)">COMPRAR RÁPIDO <i class="fas fa-bolt"></i></button>
                     </div>
                 </div>
             </section>
@@ -203,7 +188,7 @@
                     <p class="balance-label">Total Balance</p>
                     <h1 class="total-usdt-balance">0.0000 <span class="currency">USDT</span></h1>
                     <div class="wallet-actions">
-                        <button class="w-btn" onclick="recharge()"><i class="fas fa-plus-circle"></i> Recharge</button>
+                        <button class="w-btn" onclick="verifyUser()"><i class="fas fa-shield-alt"></i> Verify</button>
                         <button class="w-btn active" onclick="openSwap()"><i class="fas fa-sync-alt"></i> Swap</button>
                         <button class="w-btn" onclick="withdraw()"><i class="fas fa-arrow-up"></i> Withdraw</button>
                     </div>
