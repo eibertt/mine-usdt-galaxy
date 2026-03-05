@@ -1,154 +1,193 @@
 // =============================================================================
-// 1. FUNCIÓN DE PESTAÑAS ORIGINAL
+// 1. CONFIGURACIÓN Y VARIABLES GLOBALES
 // =============================================================================
-function switchTab(tabId, clickedElement) {
-    const views = document.querySelectorAll('.page-view');
-    views.forEach(view => {
-        view.classList.remove('active');
-    });
+const adminWallet = "TU_DIRECCION_USDT_AQUI"; // Dirección del administrador
 
-    const buttons = document.querySelectorAll('.nav-item');
-    buttons.forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    document.getElementById(tabId).classList.add('active');
-    clickedElement.classList.add('active');
-}
-
-// =============================================================================
-// 2. LÓGICA DEL JUEGO Y MEMORIA LOCAL (ARRANCA EN CERO)
-// =============================================================================
-
-// Cargamos de la memoria o iniciamos en 0
 let balance = parseFloat(localStorage.getItem('tcoin_balance')) || 0;
 let usdtBalance = parseFloat(localStorage.getItem('usdt_balance')) || 0.0000;
+let xp = parseInt(localStorage.getItem('user_xp')) || 0;
 let energy = parseInt(localStorage.getItem('user_energy')) || 2500;
-let maxEnergy = 2500;
-let incomePerTouch = 4;
+const maxEnergy = 2500;
+const incomePerTouch = 4;
 
-// Al cargar la página, se muestran los datos guardados
+// Precarga de Audios
+const tapSound = new Audio('../assets/sounds/tap.mp3');
+const swapSound = new Audio('../assets/sounds/swap.mp3');
+
+// =============================================================================
+// 2. INICIALIZACIÓN (TELEGRAM & UI)
+// =============================================================================
 window.onload = () => {
     updateUI();
+    
+    // Integración con Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Expandir la app a pantalla completa
+        
+        // Vincular el botón de inicio de tu HTML previo
+        const startBtn = document.querySelector('#welcome-bot button');
+        if(startBtn) {
+            startBtn.addEventListener('click', () => {
+                tg.HapticFeedback.impactOccurred('medium');
+                document.getElementById('welcome-bot').style.display = 'none';
+            });
+        }
+    }
 };
 
-// --- FUNCIÓN PARA EL CLIC DEL ROBOT ---
+// =============================================================================
+// 3. LÓGICA DE EVOLUCIÓN Y CLIC
+// =============================================================================
+
+function handleEvolution() {
+    const robotImg = document.getElementById('robot-tap');
+    if (!robotImg) return;
+
+    // Lógica de niveles por XP (Ejemplo: cada 5000 XP sube de nivel)
+    let currentLevel = 1;
+    if (xp >= 20000) currentLevel = 5;
+    else if (xp >= 15000) currentLevel = 4;
+    else if (xp >= 10000) currentLevel = 3;
+    else if (xp >= 5000) currentLevel = 2;
+
+    robotImg.src = `../assets/robot${currentLevel}.png`;
+    robotImg.dataset.current = currentLevel;
+}
+
 function handleRobotClick(e) {
     if (energy >= incomePerTouch) {
         balance += incomePerTouch;
+        xp += 1; // El XP aumenta con cada toque
         energy -= incomePerTouch;
         
+        // Efecto de sonido
+        tapSound.currentTime = 0;
+        tapSound.play().catch(() => {}); // Catch para evitar errores si no hay interacción previa
+
+        handleEvolution();
         updateUI();
 
-        // Número flotante
+        // Número flotante (Visual)
         const floatingNum = document.createElement('div');
         floatingNum.innerText = `+${incomePerTouch}`;
         floatingNum.className = 'floating-num';
         floatingNum.style.left = `${e.clientX}px`;
         floatingNum.style.top = `${e.clientY}px`;
-        
         document.body.appendChild(floatingNum);
         setTimeout(() => floatingNum.remove(), 800);
     } else {
-        // Opcional: vibrar o avisar que no hay energía
-        console.log("Sin energía suficiente");
+        showRoboticModal("SIN ENERGÍA", "Espera a que los núcleos se recarguen.");
     }
 }
 
-// --- ACTUALIZACIÓN DE LA INTERFAZ Y GUARDADO AUTOMÁTICO ---
-function updateUI() {
-    // 1. Guardar en la memoria del teléfono
-    localStorage.setItem('tcoin_balance', balance);
-    localStorage.setItem('usdt_balance', usdtBalance);
-    localStorage.setItem('user_energy', energy);
+// =============================================================================
+// 4. SISTEMA DE MODALES ROBÓTICOS (REEMPLAZA PROMPTS)
+// =============================================================================
 
-    // 2. Actualizar balance principal T-Coin
-    const balanceElement = document.getElementById('main-balance');
-    if(balanceElement) balanceElement.innerText = balance.toLocaleString('es-ES');
-
-    // 3. Actualizar balances T-Coin en otras vistas (Wallet y Accelerate)
-    const assetTcoin = document.getElementById('asset-tcoin');
-    const accelTcoin = document.getElementById('accel-tcoin');
-    if(assetTcoin) assetTcoin.innerText = balance.toLocaleString('es-ES');
-    if(accelTcoin) accelTcoin.innerText = balance.toLocaleString('es-ES');
-
-    // 4. Actualizar balances USDT en todas partes
-    const walletUsdt = document.querySelector('.total-usdt-balance');
-    const assetUsdt = document.getElementById('asset-usdt');
-    const accelUsdt = document.getElementById('accel-usdt');
+function showRoboticModal(title, message, isInput = false, callback = null) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-robotic';
     
-    if(walletUsdt) walletUsdt.innerHTML = `${usdtBalance.toFixed(4)} <span class="currency">USDT</span>`;
-    if(assetUsdt) assetUsdt.innerText = usdtBalance.toFixed(4);
-    if(accelUsdt) accelUsdt.innerText = usdtBalance.toFixed(4);
+    let inputHTML = isInput ? `<input type="number" id="modal-input" placeholder="Cantidad..." style="width:100%; background: #000; border: 1px solid #00f2ff; color: #00f2ff; padding: 10px; margin: 10px 0; outline: none;">` : '';
+    
+    modal.innerHTML = `
+        <h2>[ ${title} ]</h2>
+        <p>${message}</p>
+        ${inputHTML}
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button id="modal-confirm">ACEPTAR</button>
+            <button id="modal-close">CANCELAR</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
 
-    // 5. Actualizar texto de energía
-    const energyDisplay = document.getElementById('energy-text');
-    if(energyDisplay) {
-        energyDisplay.innerText = `${energy}/${maxEnergy}`;
-    }
+    document.getElementById('modal-close').onclick = () => modal.remove();
+    document.getElementById('modal-confirm').onclick = () => {
+        if (callback) {
+            const val = isInput ? document.getElementById('modal-input').value : true;
+            callback(val);
+        }
+        modal.remove();
+    };
 }
 
-// --- RECUPERACIÓN AUTOMÁTICA DE ENERGÍA ---
-setInterval(() => {
-    if (energy < maxEnergy) {
-        energy += 1;
-        updateUI(); // Esto actualizará la barra visualmente y guardará
-    }
-}, 1000); // 1 punto por segundo
+// =============================================================================
+// 5. FUNCIONES DE VISTA (MODIFICADAS)
+// =============================================================================
 
-// --- FUNCIONES EXTRA ---
-function openProfile() {
-    alert("Abriendo perfil...");
+function openSwap() {
+    showRoboticModal("SWAP PROTOCOL", `Balance: ${balance} T-Coins. Rate: 100k = 1 USDT.`, true, (amount) => {
+        amount = parseInt(amount);
+        if (amount >= 100000 && amount <= balance) {
+            let conversion = amount / 100000;
+            balance -= amount;
+            usdtBalance += conversion;
+            swapSound.play();
+            updateUI();
+            showRoboticModal("SWAP COMPLETADO", `Recibido: ${conversion.toFixed(4)} USDT`);
+        } else {
+            showRoboticModal("ERROR", "Cantidad insuficiente o menor al mínimo (100k).");
+        }
+    });
 }
 
 function openSettings() {
-    alert("Abriendo ajustes...");
-}
-
-function openSwap() {
-    let amount = prompt(`Tienes ${balance} T-Coins.\n¿Cuántos deseas cambiar a USDT? (100,000 T-Coins = 1 USDT)`);
-    if (amount) {
-        amount = parseInt(amount);
-        if (amount > 0 && amount <= balance) {
-            let conversion = amount / 100000; 
-            balance -= amount;
-            usdtBalance += conversion;
-            alert(`¡Swap exitoso! Has recibido ${conversion.toFixed(4)} USDT`);
-            updateUI();
-        } else {
-            alert("Cantidad inválida o no tienes suficientes T-Coins.");
-        }
-    }
-}
-
-function recharge() {
-    alert("Función de depósito en mantenimiento.");
+    showRoboticModal("CONFIGURACIÓN", "ID de Usuario: " + (Math.random() * 1000000).toFixed(0) + "\nVersión del Kernel: 2.0.6-G");
 }
 
 function withdraw() {
-    if (usdtBalance > 0) {
-        alert("Retirando " + usdtBalance.toFixed(4) + " USDT a tu billetera...");
-    } else {
-        alert("No tienes USDT para retirar.");
+    if (usdtBalance <= 0) {
+        showRoboticModal("ERROR DE RETIRO", "No hay fondos en el depósito de USDT.");
+        return;
     }
+    showRoboticModal("SOLICITUD DE RETIRO", `Enviar ${usdtBalance.toFixed(4)} USDT a la red externa?`, false, () => {
+        showRoboticModal("PROCESANDO", `Los fondos se enviarán a la red de minería.`);
+    });
 }
 
-// --- COMPRA DE NAVES ---
-function buyShip(shipNumber, price) {
-    if (usdtBalance >= price) {
-        usdtBalance -= price;
-        alert(`¡Nave ${shipNumber} comprada con éxito por ${price} USDT!`);
-        
-        // Cambiar la imagen de la nave principal
-        const mainShipImg = document.querySelector('.active-ship-img');
-        if(mainShipImg) mainShipImg.src = `../assets/nave${shipNumber}.png`;
-        
+// =============================================================================
+// 6. UTILIDADES Y RECARGA
+// =============================================================================
+
+function updateUI() {
+    localStorage.setItem('tcoin_balance', balance);
+    localStorage.setItem('usdt_balance', usdtBalance);
+    localStorage.setItem('user_energy', energy);
+    localStorage.setItem('user_xp', xp);
+
+    document.getElementById('main-balance').innerText = balance.toLocaleString('es-ES');
+    
+    // Actualizar XP en el contenedor creado en el HTML
+    const xpDisplay = document.querySelector('.xp-container');
+    if(xpDisplay) xpDisplay.innerHTML = `<i class="fas fa-star" style="color: gold;"></i> XP: ${xp}`;
+
+    const energyDisplay = document.getElementById('energy-text');
+    if(energyDisplay) energyDisplay.innerText = `${energy}/${maxEnergy}`;
+
+    // Actualizar balances USDT
+    const walletUsdt = document.querySelector('.total-usdt-balance');
+    if(walletUsdt) walletUsdt.innerHTML = `${usdtBalance.toFixed(4)} <span class="currency">USDT</span>`;
+}
+
+// Regeneración de energía
+setInterval(() => {
+    if (energy < maxEnergy) {
+        energy += 1;
         updateUI();
-    } else {
-        alert(`Saldo insuficiente. Necesitas ${price} USDT para esta nave.`);
     }
+}, 1000);
+
+function switchTab(tabId, clickedElement) {
+    swapSound.currentTime = 0;
+    swapSound.play().catch(() => {});
+    
+    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    clickedElement.classList.add('active');
 }
 
-function processBuy() {
-    alert("Función de compra rápida activada.");
-}
+// [CÓDIGO DE SEGURIDAD O CIERRE]
+console.log("Kernel Galaxia USDT cargado con éxito.");
